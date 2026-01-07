@@ -78,6 +78,7 @@ const TypeProductsPage = () => {
   });
 
 
+  // eslint-disable-next-line no-unused-vars
   const onChangeValue=(value) => {
     setSortOption(value);
     if(value==='newProduct'){
