@@ -26,7 +26,7 @@ const ChatWidget = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Load chat history khi mở chat
+  // Load chat history từ localStorage khi mở chat
   useEffect(() => {
     if (isOpen) {
       loadChatHistory();
@@ -43,42 +43,29 @@ const ChatWidget = () => {
     }
   }, [isOpen]);
 
-  // Load lịch sử chat từ backend
-  const loadChatHistory = async () => {
-    setIsLoading(true);
-    try {
-      const res = await ChatService.getChatHistory(sessionId);
-      
-      if (res.status === 'OK' && res.data && res.data.messages) {
-        // Convert messages từ backend format sang frontend format
-        const formattedMessages = res.data.messages.map((msg, index) => ({
-          id: index + 1,
-          text: msg.text,
-          sender: msg.sender,
-          timestamp: new Date(msg.timestamp),
-          products: msg.products || [] // giữ lại danh sách sản phẩm đã gợi ý
-        }));
-        setMessages(formattedMessages);
-      } else {
-        // Nếu chưa có lịch sử, hiển thị message chào mặc định
-        setMessages([{
-          id: 1,
-          text: 'Xin chào! Tôi có thể giúp gì cho bạn?',
-          sender: 'bot',
-          timestamp: new Date()
-        }]);
-      }
-    } catch (error) {
-      console.error('Error loading chat history:', error);
-      // Fallback: hiển thị message chào mặc định
-      setMessages([{
+  // Lưu messages vào localStorage mỗi khi có thay đổi
+  useEffect(() => {
+    if (messages.length > 0) {
+      ChatService.saveChatHistory(messages);
+    }
+  }, [messages]);
+
+  // Load lịch sử chat từ localStorage
+  const loadChatHistory = () => {
+    const storedMessages = ChatService.getChatHistory();
+    
+    if (storedMessages && storedMessages.length > 0) {
+      setMessages(storedMessages);
+    } else {
+      // Nếu chưa có lịch sử, hiển thị message chào mặc định
+      const welcomeMessage = [{
         id: 1,
         text: 'Xin chào! Tôi có thể giúp gì cho bạn?',
         sender: 'bot',
         timestamp: new Date()
-      }]);
-    } finally {
-      setIsLoading(false);
+      }];
+      setMessages(welcomeMessage);
+      ChatService.saveChatHistory(welcomeMessage);
     }
   };
 
@@ -108,8 +95,15 @@ const ChatWidget = () => {
     setIsLoading(true);
 
     try {
-      // Gọi API backend
-      const res = await ChatService.sendMessage(sessionId, messageText);
+      // Lấy recent messages để gửi lên backend cho AI context (bao gồm cả products)
+      const recentMessages = messages.slice(-8).map(msg => ({
+        text: msg.text,
+        sender: msg.sender,
+        products: msg.products || [] // Gửi kèm products để backend biết sản phẩm đã được gợi ý
+      }));
+      
+      // Gọi API backend để lấy AI response
+      const res = await ChatService.sendMessage(sessionId, messageText, recentMessages);
       
       if (res.status === 'OK' && res.data) {
         // Hiển thị bot response từ backend
@@ -161,8 +155,15 @@ const ChatWidget = () => {
     setIsLoading(true);
 
     try {
-      // Gọi API backend
-      const res = await ChatService.sendMessage(sessionId, suggestion);
+      // Lấy recent messages để gửi lên backend cho AI context (bao gồm cả products)
+      const recentMessages = messages.slice(-8).map(msg => ({
+        text: msg.text,
+        sender: msg.sender,
+        products: msg.products || [] // Gửi kèm products để backend biết sản phẩm đã được gợi ý
+      }));
+      
+      // Gọi API backend để lấy AI response
+      const res = await ChatService.sendMessage(sessionId, suggestion, recentMessages);
       
       if (res.status === 'OK' && res.data) {
         const botMessage = {

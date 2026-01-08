@@ -1,38 +1,58 @@
 import axios from 'axios';
 
-// Tạo hoặc lấy sessionId từ sessionStorage
+const CHAT_STORAGE_KEY = 'chat_history_local';
+
+// Tạo hoặc lấy sessionId từ localStorage
 export const getSessionId = () => {
-  let sessionId = sessionStorage.getItem('chat_session_id');
+  let sessionId = localStorage.getItem('chat_session_id');
   if (!sessionId) {
     sessionId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    sessionStorage.setItem('chat_session_id', sessionId);
+    localStorage.setItem('chat_session_id', sessionId);
   }
   return sessionId;
 };
 
-// Lấy lịch sử chat
-export const getChatHistory = async (sessionId) => {
+// Lấy lịch sử chat từ localStorage
+export const getChatHistory = () => {
   try {
-    const res = await axios.get(
-      `${process.env.REACT_APP_API_URL}/chat/history?sessionId=${sessionId}`
-    );
-    return res.data;
+    const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Convert timestamp strings back to Date objects
+      return parsed.map(msg => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      }));
+    }
+    return [];
   } catch (error) {
-    console.error('Error getting chat history:', error);
-    return { 
-      status: 'ERROR', 
-      data: null,
-      message: error?.response?.data?.message || 'Lỗi khi tải lịch sử chat'
-    };
+    console.error('Error loading chat history from localStorage:', error);
+    return [];
   }
 };
 
-// Gửi tin nhắn
-export const sendMessage = async (sessionId, text) => {
+// Lưu lịch sử chat vào localStorage
+export const saveChatHistory = (messages) => {
+  try {
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+  } catch (error) {
+    console.error('Error saving chat history to localStorage:', error);
+  }
+};
+
+// Gửi tin nhắn (vẫn cần backend để xử lý AI)
+export const sendMessage = async (sessionId, text, recentMessages = []) => {
   try {
     const res = await axios.post(
       `${process.env.REACT_APP_API_URL}/chat/message`,
-      { text, sessionId }
+      { 
+        text, 
+        sessionId,
+        recentMessages: recentMessages.map(msg => ({
+          text: msg.text,
+          sender: msg.sender
+        }))
+      }
     );
     return res.data;
   } catch (error) {
