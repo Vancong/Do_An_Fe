@@ -19,7 +19,7 @@ root.render(
       <Provider store={store} >
         <App />
       </Provider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={true} /> */}
     </QueryClientProvider>
   </React.StrictMode>
 );

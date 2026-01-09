@@ -12,8 +12,52 @@
     display: flex;
     margin: 0 120px;
     padding-top: 20px;
-    align-items: center;    
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 
+    // Logo và tên website
+    .header_logo {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        flex-shrink: 0;
+
+        img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        h2 {
+            cursor: pointer;
+            margin: 0;
+            font-size: 20px;
+            white-space: nowrap;
+        }
+    }
+
+    // Search container
+    .header_search {
+        flex: 1;
+        min-width: 200px;
+        margin-right: 10px;
+        margin-left: -100px;
+
+        @media (max-width: 768px) {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    }
+
+    // User section
+    .header_user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+    }
 }
 .user {
     cursor: pointer;
@@ -82,4 +126,131 @@
 
 .menu_item_li.active::after {
      background-color: #0a4f58;
+}
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .header_top {
+    margin: 0 15px;
+    padding-top: 15px;
+    gap: 10px;
+
+    .header_logo {
+        img {
+            width: 40px;
+            height: 40px;
+        }
+
+        h2 {
+            font-size: 18px;
+        }
+    }
+
+    .header_search {
+        order: 3;
+        width: 100%;
+        min-width: 100%;
+        margin-top: 10px;
+    }
+
+    .header_user {
+        gap: 8px;
+    }
+
+    // Override Ant Design Col trên mobile
+    .ant-col {
+      flex: 0 0 auto;
+      max-width: 100%;
+    }
+  }
+
+  .user {
+    gap: 5px;
+    font-size: 14px;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .user_text {
+      font-size: 13px;
+    }
+  }
+
+  .avt-header {
+    height: 25px;
+    width: 25px;
+  }
+
+  .menu_item {
+    padding: 10px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .menu_item_li {
+    padding: 8px 6px;
+    margin-right: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header_top {
+    margin: 0 10px;
+    padding-top: 10px;
+    gap: 8px;
+
+    .header_logo {
+        img {
+            width: 35px;
+            height: 35px;
+        }
+
+        h2 {
+            font-size: 16px;
+        }
+    }
+
+    .header_search {
+        margin-top: 8px;
+    }
+
+    .header_user {
+        gap: 5px;
+    }
+
+    .ant-col {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin-bottom: 0;
+    }
+  }
+
+  .user {
+    gap: 3px;
+    font-size: 12px;
+
+    .user_text {
+      font-size: 11px;
+      display: none; // Ẩn text trên mobile nhỏ, chỉ hiện icon
+    }
+  }
+
+  .avt-header {
+    height: 20px;
+    width: 20px;
+  }
+
+  .menu_item {
+    padding: 8px 0;
+  }
+
+  .menu_item_li {
+    padding: 6px 4px;
+    margin-right: 6px;
+    font-size: 12px;
+  }
 }

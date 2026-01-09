@@ -52,3 +52,67 @@
         object-fit:cover;
     }
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .profile-user {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        padding: 0 15px;
+        margin: 20px auto;
+
+        h1 {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+
+        .content-profile {
+            width: 100%;
+            max-width: 100%;
+            padding: 20px 25px;
+            gap: 20px;
+
+            .wrapper-input {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+
+                label {
+                    width: 100%;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-user {
+        padding: 0 10px;
+        margin: 15px auto;
+
+        h1 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .content-profile {
+            padding: 15px 20px;
+            gap: 15px;
+
+            .wrapper-input {
+                gap: 5px;
+
+                label {
+                    font-size: 13px;
+                }
+            }
+        }
+
+        .img-avt {
+            height: 50px;
+            width: 50px;
+        }
+    }
+}

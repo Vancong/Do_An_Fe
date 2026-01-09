@@ -88,3 +88,100 @@
     color: white;
   }
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .filter_sidebar {
+    width: 100%;
+    padding: 15px;
+
+    h3 {
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .filter_group {
+      padding: 15px 0;
+
+      h4 {
+        font-size: 15px;
+        margin-bottom: 8px;
+      }
+
+      .filter_options {
+        margin-top: 15px;
+        gap: 8px;
+
+        .filter_item {
+          padding: 6px 6px;
+          font-size: 13px;
+        }
+      }
+
+      .brand_scroll {
+        max-height: 200px;
+      }
+    }
+  }
+
+  .filter_buttons {
+    margin-top: 15px;
+    flex-direction: column;
+    gap: 10px;
+
+    .filter_btn,
+    .clear_btn {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+    }
+
+    .clear_btn {
+      margin-right: 0;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .filter_sidebar {
+    padding: 12px;
+
+    h3 {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+
+    .filter_group {
+      padding: 12px 0;
+
+      h4 {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .filter_options {
+        margin-top: 12px;
+        gap: 6px;
+
+        .filter_item {
+          padding: 5px 5px;
+          font-size: 12px;
+        }
+      }
+
+      .brand_scroll {
+        max-height: 150px;
+      }
+    }
+  }
+
+  .filter_buttons {
+    margin-top: 12px;
+
+    .filter_btn,
+    .clear_btn {
+      padding: 8px;
+      font-size: 13px;
+    }
+  }
+}

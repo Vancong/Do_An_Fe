@@ -151,3 +151,126 @@
     }
 }
 
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .content_productDetail {
+        padding-left: 15px;
+
+        .title_productDetail {
+            font-size: 28px;
+        }
+
+        .price_productDetail {
+            font-size: 18px;
+
+            .new_price {
+                font-size: 20px;
+            }
+        }
+
+        .desc_productDetail {
+            font-size: 16px;
+        }
+
+        .sizes {
+            margin-top: 15px;
+            flex-wrap: wrap;
+
+            .size {
+                padding: 8px;
+                margin-right: 8px;
+                margin-bottom: 8px;
+            }
+        }
+    }
+
+    .quantity {
+        margin: 15px 0;
+        font-size: 16px;
+
+        .minus, .plus {
+            width: 35px;
+            height: 35px;
+            font-size: 18px;
+        }
+
+        .quantity_text {
+            width: 60px;
+            height: 35px;
+            font-size: 16px;
+        }
+    }
+
+    .btn-shopping {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20px;
+        flex-direction: column;
+        gap: 10px;
+
+        button {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+
+    .btn-icon {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .content_productDetail {
+        padding-left: 10px;
+
+        .title_productDetail {
+            font-size: 22px;
+        }
+
+        .price_productDetail {
+            font-size: 16px;
+
+            .new_price {
+                font-size: 18px;
+            }
+        }
+
+        .desc_productDetail {
+            font-size: 14px;
+        }
+
+        .sizes {
+            margin-top: 10px;
+
+            .size {
+                padding: 6px;
+                margin-right: 6px;
+                margin-bottom: 6px;
+                font-size: 14px;
+            }
+        }
+    }
+
+    .quantity {
+        margin: 10px 0;
+        font-size: 14px;
+
+        .minus, .plus {
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+        }
+
+        .quantity_text {
+            width: 50px;
+            height: 32px;
+            font-size: 14px;
+        }
+    }
+
+    .btn-shopping {
+        margin-top: 15px;
+    }
+}
+

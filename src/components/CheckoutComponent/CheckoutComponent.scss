@@ -139,3 +139,90 @@
 .payment_methods input[type="radio"] {
   margin-right: 8px;
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .checkout_page {
+    padding: 20px 15px;
+    gap: 20px;
+    flex-direction: column;
+
+    h2 {
+      font-size: 22px;
+    }
+
+    .checkout_left,
+    .checkout_middle,
+    .checkout_right {
+      min-width: 100%;
+      padding: 15px;
+    }
+
+    .checkout_left input,
+    .checkout_left select,
+    .checkout_left textarea {
+      font-size: 14px;
+      padding: 8px;
+    }
+
+    .order_summary_table {
+      font-size: 14px;
+    }
+
+    .order_btn {
+      font-size: 16px;
+      padding: 15px;
+    }
+
+    .cart_btn {
+      font-size: 16px;
+      padding: 15px;
+    }
+  }
+
+  .payment_methods label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout_page {
+    padding: 15px 10px;
+    gap: 15px;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    .checkout_left,
+    .checkout_middle,
+    .checkout_right {
+      padding: 12px;
+    }
+
+    .checkout_left input,
+    .checkout_left select,
+    .checkout_left textarea {
+      font-size: 13px;
+      padding: 6px;
+    }
+
+    .order_summary_table {
+      font-size: 13px;
+    }
+
+    .order_btn {
+      font-size: 14px;
+      padding: 12px;
+    }
+
+    .cart_btn {
+      font-size: 14px;
+      padding: 12px;
+    }
+  }
+
+  .payment_methods label {
+    font-size: 13px;
+  }
+}

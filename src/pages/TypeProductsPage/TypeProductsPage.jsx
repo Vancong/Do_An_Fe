@@ -71,10 +71,24 @@ const TypeProductsPage = () => {
   });
 
 
-   const { data:productsFavorite, isLoadingFavorite } = useQuery({
-    queryKey: ['products-favorite', slug],
-    queryFn: () => FavoriteService.getUserFavorite(user?.id,user.access_token ),
-    keepPreviousData: true
+   const { data:productsFavorite, isLoadingFavorite, isError: isErrorFavorite, error: errorFavorite, isFetching: isFetchingFavorite } = useQuery({
+    queryKey: ['products-favorite', slug, user?.id],
+    queryFn: async () => {
+      try {
+        const result = await FavoriteService.getUserFavorite(user?.id, user.access_token);
+        return result;
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+        throw error;
+      }
+    },
+    keepPreviousData: true,
+    enabled: slug === 'favorite' && !!user?.id && !!user?.access_token,
+    retry: false, // Tắt retry để tránh loop
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    staleTime: 5 * 60 * 1000, // Cache 5 phút
   });
 
 
@@ -101,12 +115,54 @@ const TypeProductsPage = () => {
   }
   else if (!state&&slug==='favorite'){
     state=`Sản phẩm yêu thích`
-    productDataRender=productsFavorite?.data;
-    productDataRender=productDataRender?.filter(item =>  item!==null)
+    // Chỉ set data khi đã có kết quả và không đang loading
+    if (productsFavorite && !isLoadingFavorite) {
+      productDataRender = productsFavorite?.data || [];
+      productDataRender = productDataRender.filter(item => item !== null && item !== undefined);
+    } else if (!isLoadingFavorite && !isFetchingFavorite) {
+      // Nếu không loading và không có data, set empty array
+      productDataRender = [];
+    } else {
+      // Đang loading, giữ nguyên (có thể là undefined)
+      productDataRender = productsFavorite?.data || [];
+    }
+  }
+
+  // Xác định loading state dựa trên slug
+  // Chỉ loading khi đang fetch lần đầu (isLoading) hoặc đang fetch lại (isFetching) và chưa có lỗi
+  const isPageLoading = slug === 'favorite' 
+    ? ((isLoadingFavorite || isFetchingFavorite) && !isErrorFavorite && !productsFavorite) 
+    : isLoading;
+
+  // Xử lý khi không có user hoặc có lỗi
+  if (slug === 'favorite' && !user?.id) {
+    return (
+      <div className='container'>
+        <div className='type_product'>
+          <NavigationPathComponent category="Sản phẩm yêu thích" />
+          <h1 className='title_slug'>Sản phẩm yêu thích</h1>
+          <p style={{color:'red',marginTop:20, textAlign:'center'}}>Vui lòng đăng nhập để xem sản phẩm yêu thích</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (slug === 'favorite' && isErrorFavorite) {
+    return (
+      <div className='container'>
+        <div className='type_product'>
+          <NavigationPathComponent category="Sản phẩm yêu thích" />
+          <h1 className='title_slug'>Sản phẩm yêu thích</h1>
+          <p style={{color:'red',marginTop:20, textAlign:'center'}}>
+            {errorFavorite?.message || 'Có lỗi xảy ra khi tải danh sách yêu thích'}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <LoadingComponent isPending={isLoading} >
+    <LoadingComponent isPending={isPageLoading} >
       <div className='container'>
         <div className='type_product'>
             <NavigationPathComponent category={state} />

@@ -161,3 +161,141 @@
   }
 
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+  .order_detail {
+    padding: 15px;
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .order_info {
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 20px;
+
+      .left, .right {
+        flex: 1;
+      }
+
+      .status_badge {
+        padding: 6px 12px;
+        font-size: 12px;
+        min-width: 100px;
+      }
+
+      .payment_method {
+        padding: 6px 12px;
+        font-size: 12px;
+        min-width: 70px;
+      }
+    }
+
+    table {
+      font-size: 14px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .total_summary {
+      max-width: 100%;
+      margin-top: 20px;
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .row {
+        font-size: 14px;
+
+        &.total {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .btn_action {
+      margin-top: 20px;
+      padding-top: 20px;
+      flex-direction: column;
+      align-items: stretch;
+
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .order_detail {
+    padding: 10px;
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .order_info {
+      gap: 12px;
+      margin-bottom: 15px;
+
+      .status_badge {
+        padding: 5px 10px;
+        font-size: 11px;
+        min-width: 90px;
+      }
+
+      .payment_method {
+        padding: 5px 10px;
+        font-size: 11px;
+        min-width: 60px;
+      }
+    }
+
+    table {
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    .total_summary {
+      margin-top: 15px;
+
+      h2 {
+        font-size: 16px;
+      }
+
+      .row {
+        font-size: 13px;
+
+        &.total {
+          font-size: 15px;
+        }
+      }
+    }
+
+    .btn_action {
+      margin-top: 15px;
+      padding-top: 15px;
+      gap: 8px;
+
+      .btn {
+        height: 36px;
+        font-size: 14px;
+      }
+    }
+  }
+}

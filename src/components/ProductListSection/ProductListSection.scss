@@ -23,3 +23,44 @@
         font-weight: 500;
     }
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .product_list_section {
+        margin-top: 15px;
+
+        .card {
+            gap: 15px;
+            padding: 0 10px;
+        }
+
+        .title {
+            padding: 20px 0;
+            font-size: 28px;
+        }
+
+        .button {
+            padding: 15px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .product_list_section {
+        margin-top: 10px;
+
+        .card {
+            gap: 10px;
+            padding: 0 5px;
+        }
+
+        .title {
+            padding: 15px 0;
+            font-size: 22px;
+        }
+
+        .button {
+            padding: 10px;
+        }
+    }
+}

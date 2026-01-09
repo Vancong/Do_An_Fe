@@ -119,3 +119,127 @@
     }
 
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .cart_body {
+        padding-left: 15px;
+
+        .cart_drawer {
+            padding-bottom: 15px;
+            flex-direction: column;
+            align-items: flex-start;
+
+            .cart_img {
+                width: 120px;
+                height: 110px;
+                padding-right: 15px;
+            }
+
+            .info_product {
+                width: 100%;
+
+                .title_product {
+                    font-size: 20px;
+                    width: 100%;
+                }
+
+                .button_remove {
+                    padding-left: 0;
+                    position: static;
+                    margin-top: 10px;
+                }
+
+                .controls {
+                    padding-top: 8px;
+                }
+
+                .quantiy_price {
+                    font-size: 16px;
+                    margin-left: 15px;
+                }
+            }
+        }
+    }
+
+    .cart_footer {
+        gap: 10px;
+
+        .free_ship {
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+
+        .btn_click_cart {
+            width: 100%;
+            max-width: 200px;
+            padding: 14px 18px;
+            font-size: 16px;
+        }
+
+        .total_cart {
+            padding: 12px 15px;
+            font-size: 15px;
+        }
+
+        .checkout_btn {
+            width: 100%;
+            max-width: 260px;
+            font-size: 16px;
+            padding: 8px 18px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .cart_body {
+        padding-left: 10px;
+
+        .cart_drawer {
+            padding-bottom: 12px;
+
+            .cart_img {
+                width: 100px;
+                height: 90px;
+                padding-right: 10px;
+            }
+
+            .info_product {
+                .title_product {
+                    font-size: 18px;
+                }
+
+                .quantiy_price {
+                    font-size: 14px;
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
+
+    .cart_footer {
+        gap: 8px;
+
+        .free_ship {
+            padding: 10px 12px;
+            font-size: 13px;
+        }
+
+        .btn_click_cart {
+            max-width: 180px;
+            padding: 12px 15px;
+            font-size: 15px;
+        }
+
+        .total_cart {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .checkout_btn {
+            max-width: 240px;
+            font-size: 15px;
+            padding: 6px 15px;
+        }
+    }
+}

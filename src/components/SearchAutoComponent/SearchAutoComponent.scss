@@ -79,3 +79,56 @@
         }
     }
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .search-option {
+        padding: 8px 15px;
+        font-size: 14px;
+        gap: 8px;
+
+        .search_right {
+            font-size: 13px;
+            gap: 4px;
+
+            .price {
+                font-size: 18px;
+                line-height: 24px;
+            }
+        }
+
+        .search_left img {
+            max-width: 40px;
+        }
+    }
+
+    .custom-dropdown {
+        margin-top: 15px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-option {
+        padding: 6px 12px;
+        font-size: 12px;
+        gap: 6px;
+
+        .search_right {
+            font-size: 12px;
+            gap: 3px;
+
+            .price {
+                font-size: 16px;
+                line-height: 20px;
+            }
+        }
+
+        .search_left img {
+            max-width: 35px;
+        }
+    }
+
+    .custom-dropdown {
+        margin-top: 10px !important;
+    }
+}

@@ -64,10 +64,10 @@ const HeaderCompoent = ({isHiddenFavorite=false,isHiddenCart=false,isHiddenSearc
   
 return (
     <div className='header'>
-        <div className='header_top ' 
+        <div className='header_top' 
             style={{justifyContent: isHiddenSearch&& isHiddenFavorite ?'space-between': 'unset'}}
         >
-          <Col span={6} >
+          <Col xs={24} sm={24} md={6} lg={6} className='header_logo'>
             <div style= {{display:'flex',alignItems:'flex-end',gap:10}}> 
               <img src={websiteInfo?.logo} alt="logo" style={{width:50,height:50,objectFit:'cover',cursor:'pointer'}}
                 onClick={()=> navigate('/')}
@@ -76,13 +76,12 @@ return (
              </div>
           </Col>
           {!isHiddenSearch&&(
-            <Col span={14} style={{marginRight:10,marginLeft:-100}}>
+            <Col xs={24} sm={24} md={14} lg={14} className='header_search'>
               <SearchAutoComponent />
-
             </Col>
           )}
          
-          <Col span={6}>
+          <Col xs={24} sm={24} md={6} lg={6} className='header_user'>
            
             <div className='user'>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px',marginLeft:'16px' }}>   
@@ -124,7 +123,7 @@ return (
                                 <UserOutlined style={ {fontSize:"28px", marginLeft:"7px"}} />
                               )
                             }
-                            <div> {userName?.length?userName:user?.email}</div>
+                            <div className='user_text'> {userName?.length?userName:user?.email}</div>
                          </div>
                       </Popover>
                   </>

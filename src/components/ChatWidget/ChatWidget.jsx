@@ -96,7 +96,8 @@ const ChatWidget = () => {
 
     try {
       // Lấy recent messages để gửi lên backend cho AI context (bao gồm cả products)
-      const recentMessages = messages.slice(-8).map(msg => ({
+      // Tăng lên 12 tin nhắn để có đủ ngữ cảnh
+      const recentMessages = messages.slice(-12).map(msg => ({
         text: msg.text,
         sender: msg.sender,
         products: msg.products || [] // Gửi kèm products để backend biết sản phẩm đã được gợi ý
@@ -156,7 +157,8 @@ const ChatWidget = () => {
 
     try {
       // Lấy recent messages để gửi lên backend cho AI context (bao gồm cả products)
-      const recentMessages = messages.slice(-8).map(msg => ({
+      // Tăng lên 12 tin nhắn để có đủ ngữ cảnh
+      const recentMessages = messages.slice(-12).map(msg => ({
         text: msg.text,
         sender: msg.sender,
         products: msg.products || [] // Gửi kèm products để backend biết sản phẩm đã được gợi ý

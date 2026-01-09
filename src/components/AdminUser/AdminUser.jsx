@@ -6,8 +6,10 @@ import TableComponents from '../TableComponents/TableComponents';
 import UserFormComponent from "../FormAdmin/UserFormComponent/UserFormComponent"
 import * as UserService from "../../services/User.Service" 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useMutationHook } from '../../hooks/useMutationHook';
+import { updateUser } from '../../redux/slices/UserSlice';
+import { jwtDecode } from 'jwt-decode';
 import { alertConfirm, alertError, alertSuccess } from '../../utils/alert';
 import DrawerComponent from '../DrawerComponent/DrawerComponent';
 import LoadingComponent from '../LoadingComponent/LoadingComponent';
@@ -22,6 +24,7 @@ const AdminUser = () => {
   const [formUpdate]=Form.useForm();
   const queryClient=useQueryClient();
   const user=useSelector(state => state.user);
+  const dispatch=useDispatch();
 
   const [currentPage, setCurrentPage] = useState(1);
   const limit=8;
@@ -196,14 +199,46 @@ const AdminUser = () => {
     if (isSuccessUpdate && dataUpdate?.status === 'OK') {
       alertSuccess("Thành Công", "Cập nhật người dùng thành công");
       queryClient.invalidateQueries(['users']);
-      setIsOpenDrawer(false); 
+      setIsOpenDrawer(false);
+      
+      // Nếu user được cập nhật là chính user đang đăng nhập, tự động refresh token
+      if (rowSelected === user?.id) {
+        handleRefreshTokenForCurrentUser();
+      }
     } else if (isErrorUpdate) {
       alertError("Thất bại", errorUpdate?.message);
     }
-  }, [dataUpdate, isErrorUpdate, isSuccessUpdate]);
+  }, [dataUpdate, isErrorUpdate, isSuccessUpdate, rowSelected, user?.id]);
+  
+  // Hàm refresh token và cập nhật Redux state cho user hiện tại
+  const handleRefreshTokenForCurrentUser = async () => {
+    try {
+      const refreshResponse = await UserService.refreshToken();
+      if (refreshResponse?.status === 'OK' && refreshResponse?.access_token) {
+        // Lưu token mới vào localStorage
+        localStorage.setItem('access_token', JSON.stringify(refreshResponse.access_token));
+        
+        // Decode token để lấy thông tin user
+        const decode = jwtDecode(refreshResponse.access_token);
+        if (decode?.id) {
+          // Lấy thông tin user mới nhất từ server
+          const userDetail = await UserService.getDetailUser(decode.id, refreshResponse.access_token);
+          if (userDetail?.data) {
+            // Cập nhật Redux state với thông tin mới (bao gồm isAdmin mới)
+            dispatch(updateUser({
+              access_token: refreshResponse.access_token,
+              ...userDetail.data
+            }));
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Lỗi khi refresh token:', error);
+    }
+  };
 
 
-  const onUpdataUser= ( (values) =>{
+  const onUpdataUser= async (values) =>{
     const dataUpdate={
 
       name: values.name,
@@ -216,12 +251,46 @@ const AdminUser = () => {
         dataUpdate.password = values.password;
     }
 
+    // Nếu đang cập nhật chính mình, LUÔN refresh token trước để đảm bảo có thông tin mới nhất
+    if (rowSelected === user?.id) {
+      try {
+        console.log('Đang refresh token trước khi update chính mình...');
+        const refreshResponse = await UserService.refreshToken();
+        if (refreshResponse?.status === 'OK' && refreshResponse?.access_token) {
+          // Lưu token mới vào localStorage (không dùng JSON.stringify để tránh double quote)
+          const tokenToSave = refreshResponse.access_token;
+          localStorage.setItem('access_token', tokenToSave);
+          console.log('Đã lưu token mới vào localStorage');
+          
+          // Cập nhật Redux state với token mới
+          const decode = jwtDecode(refreshResponse.access_token);
+          console.log('Token mới sau refresh:', { id: decode?.id, isAdmin: decode?.isAdmin });
+          if (decode?.id) {
+            const userDetail = await UserService.getDetailUser(decode.id, refreshResponse.access_token);
+            if (userDetail?.data) {
+              dispatch(updateUser({
+                access_token: refreshResponse.access_token,
+                ...userDetail.data
+              }));
+              console.log('Đã cập nhật Redux state với token mới');
+            }
+          }
+        } else {
+          console.error('Refresh token không thành công:', refreshResponse);
+        }
+      } catch (error) {
+        console.error('Lỗi khi refresh token trước khi update:', error);
+      }
+    }
+
+     // Sau khi refresh token (nếu cần), gọi API update
+     // updateUser service sẽ tự động lấy token mới nhất từ localStorage
      mutationUpdate.mutate({
       id: rowSelected,
       dataUpdate,
-      access_token:user?.access_token
+      access_token: user?.access_token // Token này sẽ được thay thế bởi token trong localStorage trong updateUser service
     });
-  })
+  }
 
   const { isLoading:isLoadingUsers , data: users } = useQuery({
       queryKey: ['users',currentPage,searchText],

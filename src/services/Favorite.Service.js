@@ -18,13 +18,18 @@ export const toggle = async (data,access_token) => {
 
 
 export const getUserFavorite = async (userId,access_token) => {
-  const res = await axiosJwt.get(`${process.env.REACT_APP_API_URL}/favorite/getUserFavorite/${userId}`,{
-      headers: {
-      Authorization: `Bearer ${access_token}`
-    }
-  });
-  return res.data;
-
+  try {
+    const res = await axiosJwt.get(`${process.env.REACT_APP_API_URL}/favorite/getUserFavorite/${userId}`,{
+        headers: {
+        Authorization: `Bearer ${access_token}`
+      }
+    });
+    return res.data;
+  } catch (error) {
+    const errResponse = error?.response?.data;
+    console.error('Error getting user favorites:', error);
+    throw new Error(errResponse?.message || 'Lỗi khi lấy danh sách yêu thích');
+  }
 };
 
 export const decreaseQuantity = async (data,access_token) => {

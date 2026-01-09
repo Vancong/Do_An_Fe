@@ -12,7 +12,17 @@ const axiosJwt = axios.create({
 
 axiosJwt.interceptors.request.use(
   async (config) => {
-    const token = localStorage.getItem('access_token');
+    let token = localStorage.getItem('access_token');
+    
+    // Parse token nếu nó là JSON string
+    try {
+      if (token && token.startsWith('"')) {
+        token = JSON.parse(token);
+      }
+    } catch (e) {
+      // Token không phải JSON, giữ nguyên
+    }
+    
     let decodedToken;
     try {
       decodedToken = jwtDecode(token);
@@ -25,15 +35,19 @@ axiosJwt.interceptors.request.use(
       try {
         const data = await UserService.refreshToken();
         if (data?.access_token) {
-          localStorage.setItem('access_token', data.access_token);
+          const tokenToSave = typeof data.access_token === 'string' 
+            ? data.access_token 
+            : JSON.stringify(data.access_token);
+          localStorage.setItem('access_token', tokenToSave);
           config.headers['token'] = `Bearer ${data.access_token}`;
         }
       } catch (err) {
         console.error('Refresh token thất bại', err);
       }
     } else if (token) {
-      config.headers['token'] = `Bearer ${token}`;
-
+      // Đảm bảo token không có dấu ngoặc kép thừa
+      const cleanToken = token.replace(/^"(.*)"$/, '$1');
+      config.headers['token'] = `Bearer ${cleanToken}`;
     }
 
     return config;

@@ -94,3 +94,87 @@
     }
 
 }
+
+// Responsive cho mobile
+@media (max-width: 768px) {
+    .cart_page {
+        margin: 30px 0;
+        padding: 0 15px;
+        flex-direction: column;
+
+        .cart_btn {
+            width: 100%;
+            max-width: 100%;
+
+            .order_summary {
+                padding: 24px 12px;
+                font-size: 14px;
+            }
+
+            .summary_row {
+                margin-bottom: 8px;
+                span {
+                    font-size: 15px;
+                }
+            }
+
+            .btn_checkout {
+                padding: 15px 0;
+                font-size: 18px;
+            }
+        }
+
+        .voucher {
+            margin-top: 30px;
+            flex-direction: column;
+            gap: 10px;
+
+            input {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+
+    .btn_home {
+        padding: 15px 18px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart_page {
+        margin: 20px 0;
+        padding: 0 10px;
+
+        .cart_btn {
+            .order_summary {
+                padding: 20px 10px;
+                font-size: 13px;
+            }
+
+            .summary_row {
+                span {
+                    font-size: 14px;
+                }
+            }
+
+            .btn_checkout {
+                padding: 12px 0;
+                font-size: 16px;
+            }
+        }
+
+        .voucher {
+            margin-top: 20px;
+        }
+    }
+
+    .btn_home {
+        padding: 12px 15px;
+        font-size: 16px;
+    }
+}
