@@ -88,6 +88,12 @@ const ProductDetailsCompoent = ({ slug }) => {
       navigate('/sign-in', { state: location.pathname })
     }
     else {
+      // Kiểm tra sản phẩm có đang hoạt động không
+      if (product && product.isActive === false) {
+        alertError('Sản phẩm này đã dừng hoạt động và không thể mua');
+        return;
+      }
+      
       if (!currentSize) {
         return;
       }
@@ -215,32 +221,46 @@ const ProductDetailsCompoent = ({ slug }) => {
               </div>
             </div>
             <div className='btn-shopping'>
-              <ButtonComponent
-                styleButton={{
-                  background: '#000',
-                  color: '#fff',
-                  border: 'none',
+              {product?.isActive === false ? (
+                <div style={{ 
+                  padding: '12px', 
+                  background: '#fff3cd', 
+                  border: '1px solid #ffc107', 
                   borderRadius: '4px',
-                  fontWeight: '600'
-                }}
-                className="btn-add-cart"
-                onClick={handlAddCart}
-                textButton={'Thêm vào giỏ hàng'}
-              />
+                  textAlign: 'center',
+                  color: '#856404'
+                }}>
+                  Sản phẩm này đã dừng hoạt động
+                </div>
+              ) : (
+                <>
+                  <ButtonComponent
+                    styleButton={{
+                      background: '#000',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '4px',
+                      fontWeight: '600'
+                    }}
+                    className="btn-add-cart"
+                    onClick={handlAddCart}
+                    textButton={'Thêm vào giỏ hàng'}
+                  />
 
-              <ButtonComponent
-                styleButton={{
-                  background: '#e30613',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '4px',
-                  fontWeight: '600'
-                }}
-                className="btn-buy-now"
-                onClick={() => handlAddCart('navigate_cart')}
-                textButton={'Mua ngay'}
-              />
-
+                  <ButtonComponent
+                    styleButton={{
+                      background: '#e30613',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '4px',
+                      fontWeight: '600'
+                    }}
+                    className="btn-buy-now"
+                    onClick={() => handlAddCart('navigate_cart')}
+                    textButton={'Mua ngay'}
+                  />
+                </>
+              )}
             </div>
             <div className={checkFavorite ? 'btn-icon active' : 'btn-icon'} >
               <ButtonComponent

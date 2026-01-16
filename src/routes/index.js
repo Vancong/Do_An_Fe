@@ -101,7 +101,8 @@ export const routes = [
         path: "/admin/dashboard",
         page: AdminPage,
         isShowHeader: false,
-        isPrivate: true
+        isPrivate: true,
+        isAdminOnly: true
     },
     {
         path: "*",

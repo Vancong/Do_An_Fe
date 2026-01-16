@@ -86,14 +86,31 @@ const OrderDetailModal = ({ isModalOpen, orderDetail,setIsModalOpen }) => {
 
           <h4 style={{ marginTop: 16 }}>Sản phẩm</h4>
           <Table
-            dataSource={order.items.map((item, index) => ({
-              key: index,
-              name: item?.product?.name,
-              volume: item.volume,
-              quantity: item.quantity,
-              price: item.price.toLocaleString() + " đ",
-              total: (item.quantity * item.price).toLocaleString() + " đ",
-            }))}
+            dataSource={order.items.map((item, index) => {
+              const product = item?.product;
+              const isProductDeleted = !product || product === null;
+              const productName = isProductDeleted 
+                ? 'Sản phẩm đã bị xóa' 
+                : (product.name || 'Sản phẩm không xác định');
+              
+              return {
+                key: index,
+                name: (
+                  <span style={{ opacity: isProductDeleted ? 0.6 : 1 }}>
+                    {productName}
+                    {isProductDeleted && (
+                      <span style={{ fontSize: '12px', color: '#999', marginLeft: 8 }}>
+                        (Đã xóa)
+                      </span>
+                    )}
+                  </span>
+                ),
+                volume: item.volume + 'ml',
+                quantity: item.quantity,
+                price: item.price.toLocaleString() + " đ",
+                total: (item.quantity * item.price).toLocaleString() + " đ",
+              };
+            })}
             columns={[
               { title: "Tên sản phẩm", dataIndex: "name" },
               { title: "Dung tích", dataIndex: "volume" },

@@ -1,5 +1,7 @@
 import { Button, Menu, Drawer } from 'antd'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import {
   UserOutlined, AppstoreOutlined,
   SettingOutlined, RadarChartOutlined, FireOutlined, BarcodeOutlined, ShopOutlined, BarChartOutlined, UngroupOutlined, MenuOutlined
@@ -18,7 +20,18 @@ import AdminWebInfo from '../../components/AdminWebInfo/AdminWebInfo';
 import AdminStats from '../../components/AdminStats/AdminStats';
 
 const AdminPage = () => {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [keySelected, setKeySelected] = useState(localStorage.getItem('adminKey') || 'stats');
+  
+  useEffect(() => {
+    // Kiểm tra quyền admin - defense in depth
+    if (!user?.access_token || !user?.isAdmin) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+  
   const items = [
     getItem('Thống kê', 'stats', <BarChartOutlined />),
     getItem('Quản lý đơn hàng', 'order', <ShopOutlined />),
@@ -31,7 +44,10 @@ const AdminPage = () => {
     getItem('Thông tin website', 'webinfo', <SettingOutlined />),
   ]
 
-  const [keySelected, setKeySelected] = useState(localStorage.getItem('adminKey') || 'stats');
+  // Nếu không phải admin, không render gì cả
+  if (!user?.access_token || !user?.isAdmin) {
+    return null;
+  }
 
   const renderPage = (key) => {
     switch (key) {

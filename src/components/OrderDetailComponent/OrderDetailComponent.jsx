@@ -8,6 +8,7 @@ import LoadingComponent from "../LoadingComponent/LoadingComponent"
 import { useMutationHook } from '../../hooks/useMutationHook'
 import { useQueryClient } from '@tanstack/react-query';
 import { getStatusLabel } from '../../utils/orderStatus'
+import { alertError } from '../../utils/alert'
 
 const OrderDetailComponent = () => {
     const user = useSelector((state) => state.user)
@@ -87,23 +88,60 @@ const OrderDetailComponent = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orderDeatil.items.length > 0 && orderDeatil.items.map(item => {
+                            {orderDeatil.items.length > 0 && orderDeatil.items.map((item, index) => {
+                                const product = item.product;
+                                const isProductDeleted = !product || product === null;
+                                const isProductInactive = product && product.isActive === false;
+                                const canNavigate = !isProductDeleted && !isProductInactive && product?.slug;
+                                const productName = isProductDeleted 
+                                    ? 'Sản phẩm đã bị xóa' 
+                                    : (isProductInactive ? `${product.name} (Đã dừng hoạt động)` : product.name);
+                                const productImage = isProductDeleted ? '/placeholder-image.png' : (product.images?.[0] || '/placeholder-image.png');
+                                const productSlug = product?.slug;
+                                
                                 return (
-                                    <tr key={item.orderCode}>
+                                    <tr key={item.orderCode || index}>
                                         <td data-label="Sản phẩm">
-                                            <div onClick={() => navigate(`/product-details/${item.product.slug}`)}
-                                                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                                            <div 
+                                                onClick={() => {
+                                                    if (canNavigate) {
+                                                        navigate(`/product-details/${productSlug}`);
+                                                    } else if (isProductInactive) {
+                                                        alertError('Sản phẩm này đã dừng hoạt động');
+                                                    }
+                                                }}
+                                                style={{ 
+                                                    display: 'flex', 
+                                                    alignItems: 'center', 
+                                                    cursor: canNavigate ? 'pointer' : 'default',
+                                                    opacity: (isProductDeleted || isProductInactive) ? 0.6 : 1
+                                                }}
                                             >
-                                                <img width={60} height={60} style={{ marginRight: 10, objectFit: 'cover' }}
-                                                    src={item.product.images[0]}
-                                                    alt={item.product.name}
+                                                <img 
+                                                    width={60} 
+                                                    height={60} 
+                                                    style={{ marginRight: 10, objectFit: 'cover' }}
+                                                    src={productImage}
+                                                    alt={productName}
                                                 />
-                                                <p style={{ margin: 0 }}>{item.product.name}</p>
+                                                <div>
+                                                    <p style={{ margin: 0 }}>{productName}</p>
+                                                    {isProductDeleted && (
+                                                        <span style={{ fontSize: '12px', color: '#999' }}>
+                                                            (Sản phẩm không còn tồn tại)
+                                                        </span>
+                                                    )}
+                                                    {isProductInactive && !isProductDeleted && (
+                                                        <span style={{ fontSize: '12px', color: '#ff9800' }}>
+                                                            (Đã dừng hoạt động)
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
                                         </td>
                                         <td data-label="Đơn giá">{item.price.toLocaleString()}₫</td>
                                         <td data-label="Số lượng">{item.quantity}</td>
-                                        <td data-label="Dung tích">{item.volume}</td>
+                                        <td data-label="Dung tích">{item.volume}ml</td>
                                         <td data-label="Thành tiền"> {(item.price * item.quantity).toLocaleString()}₫</td>
                                     </tr>
                                 )

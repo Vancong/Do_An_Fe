@@ -16,7 +16,7 @@ const ProductTabsComponent = ({product}) => {
       <Tabs defaultActiveKey="1">
         <TabPane className='tab_title' tab="Chi tiết sản phẩm" key="1">
             <div className='product-tab-content'>
-                <p>Hãng: {brand?.name}</p>
+                <p>Hãng: {brand?.name || 'Chưa có thông tin'}</p>
                 <p>Giới tính: {GENDER_LABELS[gender]}</p>
                 <p>Độ tuổi khuyên dùng: Trên 20</p>
                 <p>Nồng độ: {concentration}</p>

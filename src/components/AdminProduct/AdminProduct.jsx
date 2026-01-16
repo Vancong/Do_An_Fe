@@ -81,7 +81,7 @@ const AdminProduct = () => {
             middle: product.notes?.middle?.map(note => note._id) || [],
             base: product.notes?.base?.map(note => note._id) || [],
           },
-          brand: product.brand._id,
+          brand: product.brand?._id || null,
           gender: product.gender,
           concentration: product.concentration,
           scentDuration: product.scentDuration,
