@@ -47,11 +47,13 @@
   }
 
   @keyframes pulse {
+
     0%,
     100% {
       opacity: 1;
       transform: scale(1);
     }
+
     50% {
       opacity: 0.7;
       transform: scale(1.1);
@@ -70,9 +72,10 @@
     animation: slideUp 0.3s ease;
 
     @media (max-width: 480px) {
-      width: calc(100vw - 40px);
-      height: calc(100vh - 100px);
-      max-height: 600px;
+      width: 320px; // Fixed reasonable width
+      height: 450px; // Reduced height
+      max-height: 70vh; // Limit to 70% of screen height
+      bottom: 20px; // Restore bottom positioning logic if needed via parent
     }
   }
 
@@ -81,6 +84,7 @@
       opacity: 0;
       transform: translateY(20px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -177,6 +181,7 @@
         opacity: 0;
         transform: translateY(10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -245,10 +250,14 @@
   }
 
   @keyframes chatWidgetTyping {
-    0%, 80%, 100% {
+
+    0%,
+    80%,
+    100% {
       transform: translateY(0);
       opacity: 0.4;
     }
+
     40% {
       transform: translateY(-3px);
       opacity: 1;
@@ -422,17 +431,16 @@
 
 @media (max-width: 480px) {
   .chat-widget {
-    bottom: 10px;
-    right: 10px;
+    bottom: 15px; // Slightly higher
+    right: 15px;
 
     &__button {
-      width: 56px;
-      height: 56px;
+      width: 45px; // Reduced from 56px
+      height: 45px;
     }
 
     &__icon {
-      font-size: 24px;
+      font-size: 20px; // Reduced from 24px
     }
   }
 }
-

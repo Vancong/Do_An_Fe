@@ -164,6 +164,7 @@
         }
 
         // 2. Logo (Absolute Center)
+        // 2. Logo (Absolute Center)
         .header_logo {
             position: absolute;
             left: 50%;
@@ -173,11 +174,13 @@
             width: auto !important;
             justify-content: center !important;
             margin: 0 !important;
+            pointer-events: none; // Fix click blocking
 
             .header_logo_inner {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                pointer-events: auto;
 
                 img {
                     width: 40px;
@@ -185,7 +188,7 @@
                 }
 
                 h2 {
-                    display: none; // Hide text per user request
+                    display: none;
                 }
             }
         }
@@ -196,7 +199,8 @@
             flex: 0 0 auto !important;
             justify-content: flex-end !important;
             gap: 10px;
-            z-index: 2;
+            z-index: 100 !important;
+            position: relative;
         }
 
         // 4. Search Box (Bottom)
@@ -231,10 +235,13 @@
 
             .register-text {
                 display: block !important;
-                font-size: 13px;
+                font-size: 12px; // Slightly smaller to fit
                 font-weight: 600;
                 color: #0a4f58;
                 white-space: nowrap;
+                border: 1px solid #0a4f58; // Add border
+                padding: 4px 8px; // Add padding
+                border-radius: 4px; // Rounded corners
             }
 
             .account-details {
@@ -243,6 +250,7 @@
         }
 
         .user_text {
+            display: none !important;
             // Let register-text override or use specific class
         }
     }

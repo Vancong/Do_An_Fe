@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import *as OrderService from "../../services/Order.Service"
 import { useSelector } from 'react-redux';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { Pagination, Select } from 'antd';
 import "./MyOrderComponent.scss"
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,7 @@ const MyOrderComponent = () => {
   const { isLoading, data } = useQuery({
     queryKey: ['my-order', page, status],
     queryFn: () => OrderService.getMyOrder(user?.id, user?.access_token, page, limit, status),
-    keepPreviousData: true
+    placeholderData: keepPreviousData
   });
 
   const myOrder = data?.data

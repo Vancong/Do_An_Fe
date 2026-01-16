@@ -1,28 +1,37 @@
 .siginPage {
-    height: 100vh;
+    min-height: 100vh; // Use min-height to allow scrolling
     background-color: #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px 0; // Add vertical padding to prevent cutting off
 }
 
 .page {
-    width: 500px;
-    height: 445px;
+    width: 100%; // Responsive width
+    max-width: 500px;
+    height: auto; // Allow height to grow with content (e.g. error messages)
+    min-height: 445px;
     border-radius: 6px;
-    background-color:#fff;
+    background-color: #fff;
     padding: 40px 45px 24px;
     text-align: center;
-   
+    margin: 0 10px; // Spacing on sides if screen is small
 }
 
 .inputAcccount {
     margin-top: 10px;
-    width: 300px;
-    border-top:none;
+    width: 100%; // Responsive input width
+    border-top: none;
     border-right: none;
     border-left: none;
-    background-color: rgb(232,240,254);
+    background-color: rgb(232, 240, 254);
     outline: none;
+}
 
+// Media Query for Mobile
+@media (max-width: 768px) {
+    .page {
+        padding: 30px 20px; // Reduce padding on mobile
+    }
 }

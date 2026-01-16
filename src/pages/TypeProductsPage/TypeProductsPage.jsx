@@ -5,7 +5,7 @@ import { Row, Col, Pagination, Select, Drawer, Button } from "antd";
 import { FilterOutlined } from '@ant-design/icons';
 import './TypeProductsPage.scss';
 import { useLocation, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import *as ProductService from "../../services/Product.Services"
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent';
 import NavigationPathComponent from '../../components/NavigationPathComponent/NavigationPathComponent';
@@ -70,7 +70,7 @@ const TypeProductsPage = () => {
       page: currentPage, limit, filters,
       search: searchKeyword, key: keyValue.key, value: keyValue.value
     }),
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
     enabled: slug !== 'favorite'
   });
 
@@ -86,13 +86,13 @@ const TypeProductsPage = () => {
         throw error;
       }
     },
-    keepPreviousData: true,
-    enabled: slug === 'favorite' && !!user?.id && !!user?.access_token,
-    retry: false, // Tắt retry để tránh loop
-    refetchOnWindowFocus: false,
     refetchOnMount: false,
     refetchOnReconnect: false,
-    staleTime: 5 * 60 * 1000, // Cache 5 phút
+    staleTime: 5 * 60 * 1000,
+    placeholderData: keepPreviousData,
+    enabled: slug === 'favorite' && !!user?.id && !!user?.access_token,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
 
 

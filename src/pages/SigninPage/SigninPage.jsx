@@ -8,100 +8,100 @@ import * as UserService from '../../services/User.Service';
 import { useMutationHook } from '../../hooks/useMutationHook'
 import LoadingComponent from '../../components/LoadingComponent/LoadingComponent'
 import { jwtDecode } from 'jwt-decode';
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateUser } from '../../redux/slices/UserSlice'
 import { setCart } from '../../redux/slices/CartSlice'
 import *as CartService from "../../services/Cart.Service";
 import *as FavoriteService from "../../services/Favorite.Service"
 import { setFavoriteIds } from '../../redux/slices/FavoriteSlice'
 const SigninPage = () => {
-  const [email,setEmail] =useState('');
-  const [password,setPasswrod]=useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPasswrod] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const location=useLocation();
-  const dispatch=useDispatch();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
-  const navigate= useNavigate();
-  const handleNavigateSignUp=() =>{
+  const navigate = useNavigate();
+  const handleNavigateSignUp = () => {
     navigate('/sign-up');
   }
 
 
-  const mutation=useMutationHook(
-      data => UserService.loginUser(data)
+  const mutation = useMutationHook(
+    data => UserService.loginUser(data)
   )
 
   useEffect(() => {
-      if (location.state?.email && location.state?.password) {
-        mutation.mutate({
-          email: location.state.email,
-          password: location.state.password
-        });
-      }
+    if (location.state?.email && location.state?.password) {
+      mutation.mutate({
+        email: location.state.email,
+        password: location.state.password
+      });
+    }
   }, [location.state]);
 
-  const {data,isPending,isSuccess}= mutation;
+  const { data, isPending, isSuccess } = mutation;
 
-  useEffect (() => {
+  useEffect(() => {
 
-    const handleLogin=async () =>{
-        if(isSuccess&&data.status==='OK'){
-          localStorage.setItem('access_token',JSON.stringify(data?.access_token))
-          if(data?.access_token) {
-            const decode= jwtDecode(data?.access_token);
-            if(decode?.id) {
-  
-              await handlGetDetailUser(decode.id,data?.access_token)
-              await handlDetailCart(decode.id,data?.access_token)
-              await handleGetUserFavorites(decode.id,data.access_token)
-            }
-          }
+    const handleLogin = async () => {
+      if (isSuccess && data.status === 'OK') {
+        localStorage.setItem('access_token', JSON.stringify(data?.access_token))
+        if (data?.access_token) {
+          const decode = jwtDecode(data?.access_token);
+          if (decode?.id) {
 
-          if(location.state&&!location.state.email&&location.state.password) {
-            navigate(location?.state)
-            console.log('stat')
-          }
-          else {
-            console.log('trang chu ss')
-            navigate('/')
+            await handlGetDetailUser(decode.id, data?.access_token)
+            await handlDetailCart(decode.id, data?.access_token)
+            await handleGetUserFavorites(decode.id, data.access_token)
           }
         }
+
+        if (location.state && !location.state.email && location.state.password) {
+          navigate(location?.state)
+          console.log('stat')
+        }
+        else {
+          console.log('trang chu ss')
+          navigate('/')
+        }
+      }
     }
     handleLogin();
 
-  },[isSuccess])
+  }, [isSuccess])
 
-  
-  const handleGetUserFavorites= async(id,access_token) => {
-        const res= await FavoriteService.getUserFavorite(id,access_token);
-  
-        dispatch(setFavoriteIds({total: res.total,productIds: res.data}));
-      
+
+  const handleGetUserFavorites = async (id, access_token) => {
+    const res = await FavoriteService.getUserFavorite(id, access_token);
+
+    dispatch(setFavoriteIds({ total: res.total, productIds: res.data }));
+
   }
 
   const handlDetailCart = async (id, access_token) => {
     const res = await CartService.getDetail(id, access_token);
-    const items = [...res.data||[]];
+    const items = [...res.data || []];
 
-    dispatch(setCart({ items, total: res?.total||0 }));
+    dispatch(setCart({ items, total: res?.total || 0 }));
   };
 
-  const handlGetDetailUser= async (id,access_token) =>{
-    const res= await UserService.getDetailUser(id,access_token);
+  const handlGetDetailUser = async (id, access_token) => {
+    const res = await UserService.getDetailUser(id, access_token);
 
-    dispatch(updateUser({access_token,...res?.data})) 
+    dispatch(updateUser({ access_token, ...res?.data }))
   }
 
 
-  const handleOnchangeEmail= (value) =>{
+  const handleOnchangeEmail = (value) => {
     setEmail(value)
   }
 
-  const handleOnchangePassword= (value) =>{
+  const handleOnchangePassword = (value) => {
     setPasswrod(value)
   }
 
-  const handleSignIn= () =>{
+  const handleSignIn = () => {
     mutation.mutate({
       email,
       password
@@ -110,72 +110,73 @@ const SigninPage = () => {
 
   return (
     <div className='siginPage'>
-        <LoadingComponent isPending={isPending}>
-          <div className='page' style={{ opacity: isPending ? 0.6 : 1, pointerEvents: isPending ? 'none' : 'auto' }}>
-            <h1>Đăng nhập tài khoản</h1>
-            <p>Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
-            <InputFormComponent 
-                className="inputAcccount" 
-                placeholder="Email"  
-                value={email} 
-                onChange={handleOnchangeEmail}
-                disabled={isPending}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' && email && password && !isPending) {
-                    handleSignIn();
-                  }
-                }}
+      <LoadingComponent isPending={isPending}>
+        <div className='page' style={{ opacity: isPending ? 0.6 : 1, pointerEvents: isPending ? 'none' : 'auto' }}>
+          <h1>Đăng nhập tài khoản</h1>
+          <p>Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
+          <InputFormComponent
+            className="inputAcccount"
+            placeholder="Email"
+            value={email}
+            onChange={handleOnchangeEmail}
+            disabled={isPending}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && email && password && !isPending) {
+                handleSignIn();
+              }
+            }}
+          />
+          <InputFormComponent
+            className="inputAcccount"
+            placeholder="Mật khẩu"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={handleOnchangePassword}
+            disabled={isPending}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && email && password && !isPending) {
+                handleSignIn();
+              }
+            }}
+
+          />
+
+
+          <label style={{ display: 'block', marginTop: 10, marginRight: 170, cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.6 : 1 }}>
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => !isPending && setShowPassword(!showPassword)}
+              disabled={isPending}
+              style={{ marginRight: 8 }}
             />
-            <InputFormComponent 
-                className="inputAcccount" 
-                placeholder="Mật khẩu"   
-                type={showPassword ? 'text' : 'password'}
-                value={password} 
-                onChange={handleOnchangePassword}
-                disabled={isPending}
-                onKeyDown={e => {
-                  if (e.key === 'Enter' && email && password && !isPending) {
-                    handleSignIn();
-                  }
-                }}
+            Hiện mật khẩu
+          </label>
 
-            />
+          {data?.status === 'ERR' && (
+            <div style={{ color: 'red', marginTop: '10px' }}>
+              {data.message}
+            </div>
+          )}
 
-            
-            <label style={{ display: 'block', marginTop: 10,marginRight:170, cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.6 : 1 }}>
-                <input
-                type="checkbox"
-                checked={showPassword}
-                onChange={() => !isPending && setShowPassword(!showPassword)}
-                disabled={isPending}
-                style={{ marginRight: 8 }}
-                />
-                Hiện mật khẩu
-            </label>
+          <ButtonComponent
+            disabled={!email.length || !password.length || isPending}
+            onClick={handleSignIn}
+            styleButton={{
+              background: '#0a4f58', fontWeight: '500', lineHeight: '10px',
+              color: '#fff', padding: '17px 10px', border: 'none', borderRadius: '4px',
+              fontSize: '15px', width: '170px', margin: '16px 0 10px',
+              cursor: isPending ? 'wait' : 'pointer',
+              opacity: (!email.length || !password.length || isPending) ? 0.6 : 1
 
-            {data?.status === 'ERR' && (
-              <div style={{ color: 'red', marginTop: '10px' }}>
-                  {data.message}
-              </div>
-            )}
+            }}
+            textButton={isPending ? 'Đang đăng nhập...' : 'Đăng nhập'}
 
-            <ButtonComponent
-                disabled={!email.length || !password.length || isPending}
-                onClick={handleSignIn}
-                styleButton={{background: '#0a4f58',fontWeight:'500',lineHeight:'10px',
-                            color: '#fff',padding:'17px 10px',border:'none',borderRadius:'4px',
-                            fontSize:'15px',width:'170px',margin:'16px 0 10px',
-                            cursor: isPending ? 'wait' : 'pointer',
-                            opacity: (!email.length || !password.length || isPending) ? 0.6 : 1
-
-                }}
-                textButton={isPending ? 'Đang đăng nhập...' : 'Đăng nhập'}
-                                    
-            />
-            <p style={{cursor: isPending ? 'not-allowed' : 'pointer',color:'#0f6ecd', opacity: isPending ? 0.6 : 1}} onClick={()=> !isPending && navigate('/forgot-password')}> Quên mật khẩu? </p>
-            <p>Bạn chưa có tài khoản. <span style={{cursor: isPending ? 'not-allowed' : 'pointer',color:'#0f6ecd', opacity: isPending ? 0.6 : 1}} onClick={()=> !isPending && handleNavigateSignUp}>Đăng ký tại đây.</span> </p>
-          </div>
-        </LoadingComponent>
+          />
+          <p style={{ cursor: isPending ? 'not-allowed' : 'pointer', color: '#0f6ecd', opacity: isPending ? 0.6 : 1 }} onClick={() => !isPending && navigate('/forgot-password')}> Quên mật khẩu? </p>
+          <p>Bạn chưa có tài khoản. <span style={{ cursor: isPending ? 'not-allowed' : 'pointer', color: '#0f6ecd', opacity: isPending ? 0.6 : 1 }} onClick={() => !isPending && handleNavigateSignUp()}>Đăng ký tại đây.</span> </p>
+        </div>
+      </LoadingComponent>
 
     </div>
   )

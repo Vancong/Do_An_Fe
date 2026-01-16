@@ -15,7 +15,7 @@ import OrderSuccessPage from "../pages/OrderSuccessPage/OrderSuccessPage"
 import ForgotPasswordPage from "../pages/ForgotPasswordPage/ForgotPasswordPage"
 import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage "
 
- export const routes= [
+export const routes = [
     {
         path: "/",
         page: HomePage,
@@ -65,7 +65,7 @@ import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage "
         page: TypeProductsPage,
         isShowHeader: true
     },
-     {
+    {
         path: "/forgot-password",
         page: ForgotPasswordPage,
         isShowHeader: true
@@ -75,17 +75,17 @@ import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage "
         page: ResetPasswordPage,
         isShowHeader: true
     },
-     {
+    {
         path: "/sign-in",
         page: SigninPage,
         isShowHeader: true
     },
-     {
+    {
         path: "/sign-up",
         page: SignUpPage,
-        isShowHeader: false
+        isShowHeader: true
     },
-     {
+    {
         path: "/product-details/:slug",
         page: ProductDetailPage,
         isShowHeader: true
@@ -93,19 +93,19 @@ import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage "
 
     {
         path: "/profile-user",
-        page:ProfilePage,
+        page: ProfilePage,
         isShowHeader: true,
         isPrivate: true
     },
     {
         path: "/admin/dashboard",
-        page:AdminPage,
+        page: AdminPage,
         isShowHeader: false,
         isPrivate: true
     },
     {
         path: "*",
-        page:NotFoudPage
+        page: NotFoudPage
     }
 
 ]

@@ -131,20 +131,20 @@ const AdminStats = () => {
         </Col>
         <Col xs={24} md={12}>
           {!isLoading && series.length === 0 ? (
-              <p>Chưa có dữ liệu thống kê</p>
-            ) : (
-              <Chart options={chartOptions} series={series} type="donut" width="100%" height={400} />
-            )}
+            <p>Chưa có dữ liệu thống kê</p>
+          ) : (
+            <Chart options={chartOptions} series={series} type="donut" width="100%" height={400} />
+          )}
         </Col>
       </Row>
 
       <Card title="Top sản phẩm bán chạy" style={{ marginBottom: 20 }} loading={isLoading}>
-        <Table dataSource={stats?.topProducts || []} columns={topColumns} pagination={false} />
+        <Table dataSource={stats?.topProducts || []} columns={topColumns} pagination={false} scroll={{ x: 'max-content' }} />
       </Card>
 
 
       <Card title="Top sản phẩm gần hết hàng" loading={isLoading}>
-        <Table dataSource={lowStockData} columns={lowStockColumns} pagination={false} />
+        <Table dataSource={lowStockData} columns={lowStockColumns} pagination={false} scroll={{ x: 'max-content' }} />
       </Card>
     </div>
   );
