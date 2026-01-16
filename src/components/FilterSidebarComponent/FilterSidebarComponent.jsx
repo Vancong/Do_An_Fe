@@ -4,7 +4,7 @@ import *as NoteGroupService from "../../services/NoteGroup.Service";
 import *as BrandSerivce from "../../services/Brand.Service";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
-const FilterSidebarComponent = ({ setOnFilter,slug,setCurrentPage}) => {
+const FilterSidebarComponent = ({ setOnFilter,slug,setCurrentPage, onClose}) => {
 
   const navigate= useNavigate()
   const [brands,setBrands]=useState([]);
@@ -112,6 +112,11 @@ const FilterSidebarComponent = ({ setOnFilter,slug,setCurrentPage}) => {
     navigate(`/type/loc-san-pham?${queryParams.toString()}`, { state: 'Lọc Sản Phẩm' });
 
      setCurrentPage(1); 
+     
+     // Đóng sidebar trên mobile sau khi lọc
+     if (onClose) {
+       onClose();
+     }
    
   }
 

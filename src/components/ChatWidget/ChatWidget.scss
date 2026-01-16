@@ -71,6 +71,12 @@
     overflow: hidden;
     animation: slideUp 0.3s ease;
 
+    // Giảm kích thước trên desktop
+    @media (min-width: 481px) {
+      width: 320px;
+      height: 500px;
+    }
+
     @media (max-width: 480px) {
       width: 320px; // Fixed reasonable width
       height: 450px; // Reduced height
