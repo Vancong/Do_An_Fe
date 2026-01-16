@@ -8,7 +8,8 @@
     background-color: white;
 
 }
-.header_top{
+
+.header_top {
     display: flex;
     margin: 0 120px;
     padding-top: 20px;
@@ -59,31 +60,33 @@
         flex-shrink: 0;
     }
 }
+
 .user {
     cursor: pointer;
     display: flex;
     align-items: cennter;
-    gap:10px;
+    gap: 10px;
 
-    .user_text{
+    .user_text {
         font-size: 15px;
         font-weight: 600;
     }
 }
 
 .contentPopup {
-  cursor: pointer;
-  &:hover {
-    background-color: #f5f5f5;
-    color: #000;             
-  }
+    cursor: pointer;
+
+    &:hover {
+        background-color: #f5f5f5;
+        color: #000;
+    }
 }
 
 .avt-header {
-    height:30px;;
-    width:30px;
-    border-radius:50%;
-    object-fit:cover;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .menu_item {
@@ -125,132 +128,155 @@
 }
 
 .menu_item_li.active::after {
-     background-color: #0a4f58;
+    background-color: #0a4f58;
+}
+
+// Styles for mobile menu toggle
+.mobile-menu-toggle {
+    display: none;
 }
 
 // Responsive cho mobile
 @media (max-width: 768px) {
-  .header_top {
-    margin: 0 15px;
-    padding-top: 15px;
-    gap: 10px;
+    .header_top {
+        margin: 0 15px;
+        padding-top: 15px;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: 0;
 
-    .header_logo {
-        img {
-            width: 40px;
-            height: 40px;
+        // Hamburger Menu
+        .mobile-menu-toggle {
+            display: block !important;
+            order: 1 !important;
+            flex: 0 0 auto !important;
+            width: auto !important;
+            margin-right: 10px;
+
+            .hamburger_menu {
+                font-size: 24px;
+                color: #0a4f58;
+            }
         }
 
-        h2 {
-            font-size: 18px;
+        // Logo
+        .header_logo {
+            order: 2 !important;
+            flex: 1 !important;
+            justify-content: flex-start !important;
+            display: flex !important;
+            align-items: center !important;
+
+            img {
+                width: 35px;
+                height: 35px;
+            }
+
+            h2 {
+                font-size: 16px;
+                margin-bottom: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        // User Icons
+        .header_user {
+            order: 3 !important;
+            flex: 0 0 auto !important;
+            justify-content: flex-end !important;
+            gap: 10px;
+        }
+
+        // Search Box
+        .header_search {
+            order: 4 !important;
+            flex: 0 0 100% !important;
+            width: 100% !important;
+            min-width: 100% !important;
+            margin-top: 15px !important; // Add spacing above search
+            margin-bottom: 20px !important; // Add spacing below search for banner
+        }
+
+        .ant-col.header_search {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
+
+        .ant-col.header_logo,
+        .ant-col.header_user {
+            flex: initial !important;
+            max-width: none !important;
         }
     }
 
-    .header_search {
-        order: 3;
-        width: 100%;
-        min-width: 100%;
-        margin-top: 10px;
+    .user {
+        gap: 5px;
+        font-size: 14px;
+        flex-wrap: nowrap;
+        align-items: center;
+
+        .user_text {
+            font-size: 13px;
+        }
     }
 
-    .header_user {
-        gap: 8px;
+    .avt-header {
+        height: 25px;
+        width: 25px;
     }
 
-    // Override Ant Design Col trên mobile
-    .ant-col {
-      flex: 0 0 auto;
-      max-width: 100%;
+    .menu_item {
+        display: none;
     }
-  }
 
-  .user {
-    gap: 5px;
-    font-size: 14px;
-    flex-wrap: nowrap;
-    align-items: center;
+    .menu_item_mobile {
+        padding: 0;
+        list-style: none;
 
-    .user_text {
-      font-size: 13px;
+        .menu_item_li {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            margin-right: 0;
+            display: block;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &::after {
+                display: none;
+            }
+        }
     }
-  }
-
-  .avt-header {
-    height: 25px;
-    width: 25px;
-  }
-
-  .menu_item {
-    padding: 10px 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
-
-  .menu_item_li {
-    padding: 8px 6px;
-    margin-right: 8px;
-    font-size: 14px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
 }
 
 @media (max-width: 480px) {
-  .header_top {
-    margin: 0 10px;
-    padding-top: 10px;
-    gap: 8px;
-
-    .header_logo {
-        img {
-            width: 35px;
-            height: 35px;
-        }
-
-        h2 {
-            font-size: 16px;
-        }
-    }
-
-    .header_search {
-        margin-top: 8px;
-    }
-
-    .header_user {
+    .header_top {
+        margin: 0 10px;
+        padding-top: 10px;
         gap: 5px;
+
+        .header_search {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     }
 
-    .ant-col {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin-bottom: 0;
+    .user {
+        gap: 3px;
+        font-size: 12px;
+
+        .user_text {
+            font-size: 11px;
+            display: none;
+        }
     }
-  }
 
-  .user {
-    gap: 3px;
-    font-size: 12px;
-
-    .user_text {
-      font-size: 11px;
-      display: none; // Ẩn text trên mobile nhỏ, chỉ hiện icon
+    .avt-header {
+        height: 20px;
+        width: 20px;
     }
-  }
-
-  .avt-header {
-    height: 20px;
-    width: 20px;
-  }
-
-  .menu_item {
-    padding: 8px 0;
-  }
-
-  .menu_item_li {
-    padding: 6px 4px;
-    margin-right: 6px;
-    font-size: 12px;
-  }
 }

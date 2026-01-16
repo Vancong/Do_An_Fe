@@ -13,46 +13,48 @@
     justify-content: space-between;
     margin-bottom: 30px;
 
-    .left, .right {
+    .left,
+    .right {
       flex: 1;
     }
 
-     .status_badge {
-        display: inline-block;
-        padding: 8px 14px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 500;
-        color: #fff;
-        text-align: center;
-        min-width: 120px;
+    .status_badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #fff;
+      text-align: center;
+      min-width: 120px;
     }
 
     .pending {
-        background-color: #f59e0b; 
+      background-color: #f59e0b;
     }
 
     .confirmed {
-        background-color: #10b981; 
+      background-color: #10b981;
     }
 
-    .shipping{
-        background-color: #3b82f6;
+    .shipping {
+      background-color: #3b82f6;
     }
 
     .cancelled {
-        background-color: #ef4444; 
+      background-color: #ef4444;
     }
 
     .refund_pending {
-        background-color: #fbbf24; 
+      background-color: #fbbf24;
     }
 
     .refunded {
-        background-color: #6ee7b7; 
+      background-color: #6ee7b7;
     }
-    .completed{
-        background-color: #16a34a;
+
+    .completed {
+      background-color: #16a34a;
     }
 
     .payment_method {
@@ -64,32 +66,33 @@
       text-align: center;
       min-width: 80px;
     }
-   }
+  }
 
-    table {
-        width: 100%;
-        font-size: 15px;
-        background-color: #fff;
-    }
+  table {
+    width: 100%;
+    font-size: 15px;
+    background-color: #fff;
+  }
 
-    thead {
-        background-color: #f5f7fa;
-    }
+  thead {
+    background-color: #f5f7fa;
+  }
 
-    th, td {
-        padding: 12px 16px;
-        text-align: left;
-        border-bottom: 1px solid #eee;
-    }
+  th,
+  td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+  }
 
-    th {
-        color: #333;
-        font-weight: 600;
-    }
+  th {
+    color: #333;
+    font-weight: 600;
+  }
 
-    td {
-        color: #555;
-    }
+  td {
+    color: #555;
+  }
 
   .total_summary {
     max-width: 300px;
@@ -97,7 +100,7 @@
     margin-top: 30px;
     color: #555;
 
-    h2{
+    h2 {
       font-weight: 550;
     }
 
@@ -110,6 +113,7 @@
         color: #333;
         font-weight: 550;
       }
+
       &.total {
         font-size: 18px;
         font-weight: bold;
@@ -121,43 +125,45 @@
   }
 
   .btn_action {
-      border-top: 1px solid #eee;
-      margin-left: auto;
-      margin-top: 30px;
+    border-top: 1px solid #eee;
+    margin-left: auto;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    min-height: 40px;
+    padding-top: 30px;
+    gap: 10px;
+
+    .btn {
+      cursor: pointer;
+      width: 160px;
+      height: 40px;
+      padding: 8px 24px;
+      color: white;
+      border-radius: 8px;
       display: flex;
+      justify-content: center;
       align-items: center;
-      justify-content: end;
-       min-height: 40px; 
-      padding-top:30px;
-      gap: 10px;
-      .btn {
-        cursor: pointer;
-        width: 160px;
-        height: 40px;
-        padding: 8px 24px;
-        color: white;
-        border-radius: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
 
-        &:hover {
-          opacity: 0.8;
-        }
+      &:hover {
+        opacity: 0.8;
       }
+    }
 
-      .cancel{
-        background-color: #ef4444;
-      }
-      .contact {
-        background-color: #3B82F6;
-      }
+    .cancel {
+      background-color: #ef4444;
+    }
 
-      .btn.cancel.disabled {
-        pointer-events: none;
-        opacity: 0.5;
-        cursor: not-allowed;
-      }
+    .contact {
+      background-color: #3B82F6;
+    }
+
+    .btn.cancel.disabled {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
 }
@@ -176,8 +182,11 @@
       flex-direction: column;
       gap: 15px;
       margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 20px;
 
-      .left, .right {
+      .left,
+      .right {
         flex: 1;
       }
 
@@ -195,22 +204,79 @@
     }
 
     table {
-      font-size: 14px;
-      overflow-x: auto;
+      border: 0;
+      width: 100%;
       display: block;
     }
 
-    th, td {
-      padding: 10px 12px;
-      font-size: 13px;
+    thead {
+      display: none;
+    }
+
+    tbody {
+      display: block;
+      width: 100%;
+    }
+
+    tr {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f5f5f5;
+      padding: 10px 0;
+      text-align: right;
+      width: 100%;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:first-child {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+
+        div {
+          width: 100%;
+        }
+      }
+
+      &::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #555;
+        text-transform: uppercase;
+        font-size: 12px;
+        text-align: left;
+        margin-right: 15px;
+      }
     }
 
     .total_summary {
       max-width: 100%;
       margin-top: 20px;
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
 
       h2 {
         font-size: 18px;
+        margin-top: 0;
       }
 
       .row {
@@ -231,6 +297,7 @@
       .btn {
         width: 100%;
         margin-bottom: 10px;
+        height: 44px;
       }
     }
   }
@@ -243,59 +310,6 @@
     h2 {
       font-size: 18px;
       margin-bottom: 12px;
-    }
-
-    .order_info {
-      gap: 12px;
-      margin-bottom: 15px;
-
-      .status_badge {
-        padding: 5px 10px;
-        font-size: 11px;
-        min-width: 90px;
-      }
-
-      .payment_method {
-        padding: 5px 10px;
-        font-size: 11px;
-        min-width: 60px;
-      }
-    }
-
-    table {
-      font-size: 12px;
-    }
-
-    th, td {
-      padding: 8px 10px;
-      font-size: 12px;
-    }
-
-    .total_summary {
-      margin-top: 15px;
-
-      h2 {
-        font-size: 16px;
-      }
-
-      .row {
-        font-size: 13px;
-
-        &.total {
-          font-size: 15px;
-        }
-      }
-    }
-
-    .btn_action {
-      margin-top: 15px;
-      padding-top: 15px;
-      gap: 8px;
-
-      .btn {
-        height: 36px;
-        font-size: 14px;
-      }
     }
   }
 }

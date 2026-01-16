@@ -10,139 +10,139 @@ import { useQueryClient } from '@tanstack/react-query';
 import { getStatusLabel } from '../../utils/orderStatus'
 
 const OrderDetailComponent = () => {
-    const user=useSelector((state)=>state.user)
-    const {orderCode}=useParams();
-    const queryClient=useQueryClient()
-    const navigate=useNavigate();
-    const { isLoading , data } = useQuery ({
+    const user = useSelector((state) => state.user)
+    const { orderCode } = useParams();
+    const queryClient = useQueryClient()
+    const navigate = useNavigate();
+    const { isLoading, data } = useQuery({
         queryKey: ['order-detail'],
-        queryFn: () => OrderService.getDetail(user?.id,user?.access_token,orderCode),
+        queryFn: () => OrderService.getDetail(user?.id, user?.access_token, orderCode),
         keepPreviousData: true,
         enabled: !!orderCode,
     });
-    const orderDeatil=data?.data;
-    const addres=`${orderDeatil?.address?.ward}, ${orderDeatil?.address?.district},
+    const orderDeatil = data?.data;
+    const addres = `${orderDeatil?.address?.ward}, ${orderDeatil?.address?.district},
     ${orderDeatil?.address?.province}`;
 
-    const mutationCancelled= useMutationHook(async ({id,access_token,data})=>{
-        console.log(id,access_token,data)
-        return await OrderService.cancelled(id,access_token,data)
+    const mutationCancelled = useMutationHook(async ({ id, access_token, data }) => {
+        console.log(id, access_token, data)
+        return await OrderService.cancelled(id, access_token, data)
     })
-    const {isPending:isPendingCancelled,isSuccess:isSuccessCancelled,data: dataCancelled}=mutationCancelled;
-    
-    useEffect(()=>{
-        if(dataCancelled?.status==='OK'&&isSuccessCancelled){
-              queryClient.invalidateQueries(['order-detail']);
+    const { isPending: isPendingCancelled, isSuccess: isSuccessCancelled, data: dataCancelled } = mutationCancelled;
+
+    useEffect(() => {
+        if (dataCancelled?.status === 'OK' && isSuccessCancelled) {
+            queryClient.invalidateQueries(['order-detail']);
         }
-    },[isSuccessCancelled,dataCancelled])
+    }, [isSuccessCancelled, dataCancelled])
     const canCancel = orderDeatil?.status === 'confirmed' || orderDeatil?.status === 'pending';
-    const handleCancel= () =>{
-        let status='cancelled'
-            if(orderDeatil.isPaid) {
-                status='refund_pending';
-            }
-            const data={
-                orderCode,
-                status
-            }
-        mutationCancelled.mutate({id:user?.id,access_token:user?.access_token,data});
-       
+    const handleCancel = () => {
+        let status = 'cancelled'
+        if (orderDeatil.isPaid) {
+            status = 'refund_pending';
+        }
+        const data = {
+            orderCode,
+            status
+        }
+        mutationCancelled.mutate({ id: user?.id, access_token: user?.access_token, data });
+
     }
 
 
-  return (
-    <LoadingComponent isPending={isLoading}>
-        {orderDeatil&&(
-            <div className='order_detail'>
-                <h2>Đơn hàng {orderCode}</h2>
+    return (
+        <LoadingComponent isPending={isLoading}>
+            {orderDeatil && (
+                <div className='order_detail'>
+                    <h2>Đơn hàng {orderCode}</h2>
 
-                <div className="order_info">
-                    <div className="left">
-                        <p><strong>Ngày đặt hàng:</strong>{new Date(orderDeatil.createdAt).toLocaleDateString('vi-VN')}</p>
-                        <p><strong>Trạng thái:</strong> <span className={`status_badge ${orderDeatil.status}`}>
-                            {getStatusLabel(orderDeatil.status)} </span>
-                        </p>
-                        <p><strong>Thanh toán:</strong> <span className="payment_method">{orderDeatil.paymentMethod}</span></p>
-                        {orderDeatil?.paidAt&&(
-                            <p><strong>Thanh toán vào lúc:</strong> 
-                            <span> {new Date(orderDeatil.paidAt).toLocaleString("vi-VN")}</span></p>
-                        )}
-                    </div>
+                    <div className="order_info">
+                        <div className="left">
+                            <p><strong>Ngày đặt hàng:</strong>{new Date(orderDeatil.createdAt).toLocaleDateString('vi-VN')}</p>
+                            <p><strong>Trạng thái:</strong> <span className={`status_badge ${orderDeatil.status}`}>
+                                {getStatusLabel(orderDeatil.status)} </span>
+                            </p>
+                            <p><strong>Thanh toán:</strong> <span className="payment_method">{orderDeatil.paymentMethod}</span></p>
+                            {orderDeatil?.paidAt && (
+                                <p><strong>Thanh toán vào lúc:</strong>
+                                    <span> {new Date(orderDeatil.paidAt).toLocaleString("vi-VN")}</span></p>
+                            )}
+                        </div>
                         <div className="right">
-                        <p><strong>Khách hàng:</strong> {orderDeatil.name}</p>
-                        <p><strong>Điện thoại:</strong> {orderDeatil.phone}</p>
-                        <p><strong>Email:</strong> {orderDeatil.email || "Không có"} </p>
-                        <p><strong>Địa chỉ: </strong>{addres}</p>
+                            <p><strong>Khách hàng:</strong> {orderDeatil.name}</p>
+                            <p><strong>Điện thoại:</strong> {orderDeatil.phone}</p>
+                            <p><strong>Email:</strong> {orderDeatil.email || "Không có"} </p>
+                            <p><strong>Địa chỉ: </strong>{addres}</p>
+                        </div>
                     </div>
-                </div>
 
-                <table className="product_table">
-                    <thead>
-                    <tr>
-                        <th>Sản phẩm</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Dung tích</th>
-                        <th>Thành tiền</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        {orderDeatil.items.length>0&&orderDeatil.items.map(item =>{
+                    <table className="product_table">
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Đơn giá</th>
+                                <th>Số lượng</th>
+                                <th>Dung tích</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orderDeatil.items.length > 0 && orderDeatil.items.map(item => {
                                 return (
-                                    <tr key={item.orderCode}>   
-                                        <td>
-                                            <div onClick={() => navigate(`/product-details/${item.product.slug}`)}  
-                                                style={{display:'flex',alignItems:'center',cursor:'pointer'}}
+                                    <tr key={item.orderCode}>
+                                        <td data-label="Sản phẩm">
+                                            <div onClick={() => navigate(`/product-details/${item.product.slug}`)}
+                                                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
                                             >
-                                                <img width={100} height={100} style={{marginRight:10}} 
+                                                <img width={60} height={60} style={{ marginRight: 10, objectFit: 'cover' }}
                                                     src={item.product.images[0]}
                                                     alt={item.product.name}
                                                 />
-                                                <p>{item.product.name}</p>
+                                                <p style={{ margin: 0 }}>{item.product.name}</p>
                                             </div>
-                                        </td>                                   
-                                        <td >{item.price.toLocaleString()}₫</td>
-                                        <td>{item.quantity}</td> 
-                                        <td >{item.volume}</td>
-                                        <td > {(item.price*item.quantity).toLocaleString()}₫</td>
+                                        </td>
+                                        <td data-label="Đơn giá">{item.price.toLocaleString()}₫</td>
+                                        <td data-label="Số lượng">{item.quantity}</td>
+                                        <td data-label="Dung tích">{item.volume}</td>
+                                        <td data-label="Thành tiền"> {(item.price * item.quantity).toLocaleString()}₫</td>
                                     </tr>
                                 )
                             })}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                <div className="total_summary">
-                    <h2>Tổng kết đơn hàng</h2>
-                    <div className="row"><span>Tạm tính:</span> 
+                    <div className="total_summary">
+                        <h2>Tổng kết đơn hàng</h2>
+                        <div className="row"><span>Tạm tính:</span>
                             <span className='price'>{(orderDeatil.totalPrice).toLocaleString()}₫</span>
-                    </div>
-                    <div className="row"><span>Giảm giá:</span> <span className='price'>-{(orderDeatil.discountValue).toLocaleString()}</span></div>
-                    <div className="row" ><span>Phí vận chuyển:</span>
-                            <span className='price'>{(orderDeatil.shipping).toLocaleString()}₫</span>
-                    </div>
-                    <div className="row total"><span>Tổng cộng:</span> 
-                            <span > {(orderDeatil.finalPrice).toLocaleString()}₫</span>
-                    </div>
-                </div>
-
-                <div className='btn_action'>
-                   <LoadingComponent isPending={isPendingCancelled} >
-                        <div  className={`btn cancel ${(isPendingCancelled || !canCancel) ? 'disabled' : ''}`}
-                            onClick={() => {
-                                if (canCancel) handleCancel();
-                            }}
-                        >
-                                {isPendingCancelled ? 'Đang hủy...' : 'Hủy đơn hàng'}
                         </div>
-                   </LoadingComponent>
-                    <div className='btn contact'>
+                        <div className="row"><span>Giảm giá:</span> <span className='price'>-{(orderDeatil.discountValue).toLocaleString()}</span></div>
+                        <div className="row" ><span>Phí vận chuyển:</span>
+                            <span className='price'>{(orderDeatil.shipping).toLocaleString()}₫</span>
+                        </div>
+                        <div className="row total"><span>Tổng cộng:</span>
+                            <span > {(orderDeatil.finalPrice).toLocaleString()}₫</span>
+                        </div>
+                    </div>
+
+                    <div className='btn_action'>
+                        <LoadingComponent isPending={isPendingCancelled} >
+                            <div className={`btn cancel ${(isPendingCancelled || !canCancel) ? 'disabled' : ''}`}
+                                onClick={() => {
+                                    if (canCancel) handleCancel();
+                                }}
+                            >
+                                {isPendingCancelled ? 'Đang hủy...' : 'Hủy đơn hàng'}
+                            </div>
+                        </LoadingComponent>
+                        <div className='btn contact'>
                             Liên hệ hỗ trợ
+                        </div>
                     </div>
                 </div>
-            </div>
-        )}
-    </LoadingComponent>
-  )
+            )}
+        </LoadingComponent>
+    )
 }
 
 export default OrderDetailComponent

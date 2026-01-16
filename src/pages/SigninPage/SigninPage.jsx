@@ -110,67 +110,72 @@ const SigninPage = () => {
 
   return (
     <div className='siginPage'>
-        <div className='page'>
-          <h1>Đăng nhập tài khoản</h1>
-          <p>Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
-          <InputFormComponent 
-              className="inputAcccount" 
-              placeholder="Email"  
-              value={email} 
-              onChange={handleOnchangeEmail} 
-              onKeyDown={e => {
-                if (e.key === 'Enter' && email && password) {
-                  handleSignIn();
-                }
-              }}
-          />
-          <InputFormComponent 
-              className="inputAcccount" 
-              placeholder="Mật khẩu"   
-              type={showPassword ? 'text' : 'password'}
-              value={password} 
-              onChange={handleOnchangePassword}  
-              onKeyDown={e => {
-                if (e.key === 'Enter' && email && password) {
-                  handleSignIn();
-                }
-              }}
+        <LoadingComponent isPending={isPending}>
+          <div className='page' style={{ opacity: isPending ? 0.6 : 1, pointerEvents: isPending ? 'none' : 'auto' }}>
+            <h1>Đăng nhập tài khoản</h1>
+            <p>Nếu bạn đã có tài khoản, đăng nhập tại đây.</p>
+            <InputFormComponent 
+                className="inputAcccount" 
+                placeholder="Email"  
+                value={email} 
+                onChange={handleOnchangeEmail}
+                disabled={isPending}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && email && password && !isPending) {
+                    handleSignIn();
+                  }
+                }}
+            />
+            <InputFormComponent 
+                className="inputAcccount" 
+                placeholder="Mật khẩu"   
+                type={showPassword ? 'text' : 'password'}
+                value={password} 
+                onChange={handleOnchangePassword}
+                disabled={isPending}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && email && password && !isPending) {
+                    handleSignIn();
+                  }
+                }}
 
-          />
+            />
 
-          
-          <label style={{ display: 'block', marginTop: 10,marginRight:170, cursor: 'pointer' }}>
-              <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-              style={{ marginRight: 8 }}
-              />
-              Hiện mật khẩu
-          </label>
+            
+            <label style={{ display: 'block', marginTop: 10,marginRight:170, cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.6 : 1 }}>
+                <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => !isPending && setShowPassword(!showPassword)}
+                disabled={isPending}
+                style={{ marginRight: 8 }}
+                />
+                Hiện mật khẩu
+            </label>
 
-          {data?.status === 'ERR' && (
-            <div style={{ color: 'red', marginTop: '10px' }}>
-                {data.message}
-            </div>
-          )}
+            {data?.status === 'ERR' && (
+              <div style={{ color: 'red', marginTop: '10px' }}>
+                  {data.message}
+              </div>
+            )}
 
-          <LoadingComponent isPending={isPending}>
             <ButtonComponent
-                disabled={!email.length || !password.length}
+                disabled={!email.length || !password.length || isPending}
                 onClick={handleSignIn}
                 styleButton={{background: '#0a4f58',fontWeight:'500',lineHeight:'10px',
                             color: '#fff',padding:'17px 10px',border:'none',borderRadius:'4px',
-                            fontSize:'15px',width:'170px',margin:'16px 0 10px'
+                            fontSize:'15px',width:'170px',margin:'16px 0 10px',
+                            cursor: isPending ? 'wait' : 'pointer',
+                            opacity: (!email.length || !password.length || isPending) ? 0.6 : 1
 
                 }}
-                textButton={'Đăng nhập'}
+                textButton={isPending ? 'Đang đăng nhập...' : 'Đăng nhập'}
                                     
             />
-          </LoadingComponent>
-          <p style={{cursor:'pointer',color:'#0f6ecd'}} onClick={()=> navigate('/forgot-password')}> Quên mật khẩu? </p>
-          <p>Bạn chưa có tài khoản. <span style={{cursor:'pointer',color:'#0f6ecd'}} onClick={handleNavigateSignUp}>Đăng ký tại đây.</span> </p>
-        </div>
+            <p style={{cursor: isPending ? 'not-allowed' : 'pointer',color:'#0f6ecd', opacity: isPending ? 0.6 : 1}} onClick={()=> !isPending && navigate('/forgot-password')}> Quên mật khẩu? </p>
+            <p>Bạn chưa có tài khoản. <span style={{cursor: isPending ? 'not-allowed' : 'pointer',color:'#0f6ecd', opacity: isPending ? 0.6 : 1}} onClick={()=> !isPending && handleNavigateSignUp}>Đăng ký tại đây.</span> </p>
+          </div>
+        </LoadingComponent>
 
     </div>
   )

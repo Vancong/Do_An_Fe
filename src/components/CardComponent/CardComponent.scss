@@ -1,4 +1,4 @@
-.card_item{
+.card_item {
     position: relative;
     height: 450px;
     border: 1.6px solid #E2E2E2;
@@ -11,7 +11,7 @@
 
     .discount-product {
         position: absolute;
-        top:15px;
+        top: 15px;
         left: 15px;
         color: white;
         background-color: #FF0000;
@@ -23,7 +23,7 @@
     }
 
     .icon_love:hover path {
-          fill: #e30613;
+        fill: #e30613;
     }
 
     .icon_love.active path {
@@ -32,31 +32,35 @@
 
     .icon_love {
         position: absolute;
-        top:15px;
+        top: 15px;
         right: 15px;
         border: 1.6px solid transparent;
 
     }
 
-    .old_price{
+    .old_price {
         text-decoration: line-through;
         text-decoration-thickness: 1.5px;
-        
+
     }
-    .new_price{
-        color:#e30613 ;
+
+    .new_price {
+        color: #e30613;
         font-size: 22px;
         margin-top: -20px;
     }
-    
-// product_order
- 
-    .product_order{
+
+    // product_order
+
+    .product_order {
         justify-content: center;
         margin-bottom: 15px;
         visibility: hidden;
         display: flex;
-        button , .icon_buy, .icon_detail {
+
+        button,
+        .icon_buy,
+        .icon_detail {
             border-radius: 6px;
             border: 1.6px solid #E2E2E2;
             font-weight: 600;
@@ -69,14 +73,16 @@
             background-color: #ebe7e7;
             border: 1px solid #000;
         }
-       
-        button{
+
+        button {
             cursor: pointer;
             margin: 0 15px;
             padding: 0 5%;
             min-width: 100px;
         }
-        .icon_buy,.icon_detail {
+
+        .icon_buy,
+        .icon_detail {
             height: 40px;
             width: 42px;
             padding: 10px 6px;
@@ -98,10 +104,10 @@
         line-height: 1.5;
         color: #333;
         padding-bottom: 8px;
-        
+
     }
 
-    .product_title::after{
+    .product_title::after {
         content: '';
         position: absolute;
         bottom: 0;
@@ -111,7 +117,7 @@
         border: 1px solid #D0D5DF;
     }
 
-    .product_description{
+    .product_description {
         font-size: 18px;
         line-height: 32px;
         margin-top: 13.5px;
@@ -122,8 +128,8 @@
         line-height: 32px;
         color: #000;
     }
-    
-   
+
+
 }
 
 // Responsive cho mobile
@@ -162,7 +168,8 @@
                 margin: 0 10px;
             }
 
-            .icon_buy, .icon_detail {
+            .icon_buy,
+            .icon_detail {
                 height: 35px;
                 width: 37px;
                 font-size: 20px;
@@ -173,9 +180,9 @@
 
 @media (max-width: 480px) {
     .card_item {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-height: 380px;
+        width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
+        min-height: 260px;
         margin-bottom: 10px;
 
         .discount-product {
@@ -205,21 +212,30 @@
         }
 
         .product_order {
+            gap: 5px; // Use gap for spacing instead of margins
+            justify-content: space-evenly; // Distribute allow
+
             button {
-                min-width: 70px;
-                padding: 0 2%;
-                margin: 0 8px;
-                font-size: 14px;
+                min-width: unset; // Remove min-width restriction better
+                width: auto;
+                padding: 0 4px;
+                margin: 0; // Remove margin, rely on gap
+                font-size: 11px; // Smaller font
+                white-space: nowrap;
+                height: 32px; // Match icon height
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
-            .icon_buy, .icon_detail {
+            .icon_buy,
+            .icon_detail {
                 height: 32px;
-                width: 34px;
-                font-size: 18px;
+                width: 32px; // Square icons
+                font-size: 16px;
+                padding: 0; // Remove internal padding
+                margin: 0;
             }
         }
     }
 }
-
-
-

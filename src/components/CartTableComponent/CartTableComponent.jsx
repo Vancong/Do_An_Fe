@@ -2,55 +2,55 @@ import { Table, Image, Button, InputNumber } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Fomater } from '../../utils/fomater';
 import *as CartService from "../../services/Cart.Service";
-import { increaseQuantity,decreaseQuantity,removeCart } from '../../redux/slices/CartSlice';
+import { increaseQuantity, decreaseQuantity, removeCart } from '../../redux/slices/CartSlice';
 import "./CartTableComponent.scss"
 import { useDispatch, useSelector } from 'react-redux';
-import {alertError} from "../../utils/alert"
+import { alertError } from "../../utils/alert"
 import { useNavigate } from 'react-router-dom';
 const CartTableComponent = ({ cartItems, onIncrease, onDecrease, onRemove }) => {
-    const dispatch=useDispatch();
-    const user=useSelector((state)=> state.user)
-    const navigate=useNavigate();
-    const handleIncrease = async (productId, volume) => {
-      const data={
-        productId,
-        volume,
-        userId: user?.id
-      }
-      try {
-        await CartService.increaseQuantity(user?.id,user?.access_token,data);
-        dispatch(increaseQuantity({productId,volume}));
-      } catch (err) {
-        alertError("Thất bại",err.response?.data?.message || "Có lỗi xảy ra");
-      }
-      
-    };
-  
-    const handleDecrease =async (productId, volume) => {
-       const items = cartItems.find((item) => item.product._id === productId && item.volume === volume);
-       if(items.quantity<=1) {
-          handleRemove(productId,volume);
-          return;
-       }
-       const data={
-        productId,
-        volume,
-        userId: user?.id
-      }
-      await CartService.decreaseQuantity(user?.id,user?.access_token,data);
-      dispatch(decreaseQuantity({productId,volume}));
-    };
-  
-    const handleRemove =async (productId, volume) => {
-       const data={
-        productId,
-        volume,
-        userId: user?.id
-      }
-      console.log(user)
-      await CartService.deleteProductInCart(user?.id, user?.access_token,data);
-      dispatch(removeCart({ productId, volume }));
-    };
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user)
+  const navigate = useNavigate();
+  const handleIncrease = async (productId, volume) => {
+    const data = {
+      productId,
+      volume,
+      userId: user?.id
+    }
+    try {
+      await CartService.increaseQuantity(user?.id, user?.access_token, data);
+      dispatch(increaseQuantity({ productId, volume }));
+    } catch (err) {
+      alertError("Thất bại", err.response?.data?.message || "Có lỗi xảy ra");
+    }
+
+  };
+
+  const handleDecrease = async (productId, volume) => {
+    const items = cartItems.find((item) => item.product._id === productId && item.volume === volume);
+    if (items.quantity <= 1) {
+      handleRemove(productId, volume);
+      return;
+    }
+    const data = {
+      productId,
+      volume,
+      userId: user?.id
+    }
+    await CartService.decreaseQuantity(user?.id, user?.access_token, data);
+    dispatch(decreaseQuantity({ productId, volume }));
+  };
+
+  const handleRemove = async (productId, volume) => {
+    const data = {
+      productId,
+      volume,
+      userId: user?.id
+    }
+    console.log(user)
+    await CartService.deleteProductInCart(user?.id, user?.access_token, data);
+    dispatch(removeCart({ productId, volume }));
+  };
 
   const columns = [
     {
@@ -61,14 +61,14 @@ const CartTableComponent = ({ cartItems, onIncrease, onDecrease, onRemove }) => 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Image src={record.product.images[0]} width={60} height={60} />
           <div>
-            <div onClick={()=>navigate(`/product-details/${record.product.slug}`) }
-               className='title_product_cart' >{record.product.name}-{record.volume}
-                 ml
+            <div onClick={() => navigate(`/product-details/${record.product.slug}`)}
+              className='title_product_cart' >{record.product.name}-{record.volume}
+              ml
             </div>
-            
-            <div className='btn_delete_cart' onClick={() => handleRemove(record.product._id,record.volume)}> 
-                <DeleteOutlined />
-                <span style={{paddingLeft:8}}>Xóa</span>
+
+            <div className='btn_delete_cart' onClick={() => handleRemove(record.product._id, record.volume)}>
+              <DeleteOutlined />
+              <span style={{ paddingLeft: 8 }}>Xóa</span>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@ const CartTableComponent = ({ cartItems, onIncrease, onDecrease, onRemove }) => 
       dataIndex: 'price',
       key: 'price',
       render: (price) => (
-         <span className="price_cart">{Fomater(price)}</span>
+        <span className="price_cart">{Fomater(price)}</span>
       )
     },
     {
@@ -87,37 +87,40 @@ const CartTableComponent = ({ cartItems, onIncrease, onDecrease, onRemove }) => 
       dataIndex: 'quantity',
       key: 'quantity',
       render: (_, record) => (
-         <div className='controls'>
-              <span className='button_quantity' 
-                        onClick={() => handleDecrease(record.product._id, record.volume)}>
-                        -
-                </span>
-                <span>{record.quantity}</span>
-                <span className='button_quantity' 
-                    onClick={() => handleIncrease(record.product._id, record.volume)}>
-                        +
-                </span>  
+        <div className='controls'>
+          <span className='button_quantity'
+            onClick={() => handleDecrease(record.product._id, record.volume)}>
+            -
+          </span>
+          <span>{record.quantity}</span>
+          <span className='button_quantity'
+            onClick={() => handleIncrease(record.product._id, record.volume)}>
+            +
+          </span>
 
-         </div>
+        </div>
       )
     },
     {
       title: 'Tổng',
       key: 'total',
-      render: (_, record) =>(
-          <span className="total_cart">{Fomater(record.quantity * record.price)}</span>
+      render: (_, record) => (
+        <span className="total_cart">{Fomater(record.quantity * record.price)}</span>
       )
     }
-    
+
   ];
 
   return (
-    <Table
-      columns={columns}
-      dataSource={cartItems}
-      rowKey={(record) => record.product._id + '-' + record.volume}
-      pagination={false}
-    />
+    <div className="cart-table-wrapper">
+      <Table
+        className="cart-table"
+        columns={columns}
+        dataSource={cartItems}
+        rowKey={(record) => record.product._id + '-' + record.volume}
+        pagination={false}
+      />
+    </div>
   );
 };
 

@@ -86,58 +86,63 @@ const SignUpPage = () => {
 
   return (
      <div className='siginPage'>
-        <div className='page'>
-          <h1>Đăng ký tài khoản</h1>
-          <p>Nếu bạn đã có tài khoản, đăng nhập <span onClick={() => navigate('/sign-in')} style={{cursor:'pointer',color:'#0f6ecd'}}>tại đây</span>.</p>
-          <InputFormComponent 
-              className="inputAcccount" 
-              placeholder="Email" 
-              value={email} 
-              onChange={handleOnchangeEmail} 
-          />
-          <InputFormComponent 
-              className="inputAcccount" 
-              placeholder="Mật khẩu" 
-              type={showPassword ? 'text' : 'password'}
-              value={password} 
-              onChange={handleOnchangePassword}   
-          />
-          <InputFormComponent 
-              className="inputAcccount" 
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Nhập lại mật khẩu" 
-              value={confirmPassword}
-              onChange={handleOnchangeConfirmPassword}
-          />
-           <label style={{ display: 'block', marginTop: 10,marginRight:170, cursor: 'pointer' }}>
-              <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-              style={{ marginRight: 8 }}
-              />
-              Hiện mật khẩu
-          </label>
-          
-          {data?.status === "ERR" && (
-              <div style={{ color: 'red', marginTop: '10px' }}>
-                {data.message}
-              </div>
-          )}
-          <LoadingComponent isPending={isPending}>
+        <LoadingComponent isPending={isPending}>
+          <div className='page' style={{ opacity: isPending ? 0.6 : 1, pointerEvents: isPending ? 'none' : 'auto' }}>
+            <h1>Đăng ký tài khoản</h1>
+            <p>Nếu bạn đã có tài khoản, đăng nhập <span onClick={() => !isPending && navigate('/sign-in')} style={{cursor: isPending ? 'not-allowed' : 'pointer',color:'#0f6ecd', opacity: isPending ? 0.6 : 1}}>tại đây</span>.</p>
+            <InputFormComponent 
+                className="inputAcccount" 
+                placeholder="Email" 
+                value={email} 
+                onChange={handleOnchangeEmail}
+                disabled={isPending}
+            />
+            <InputFormComponent 
+                className="inputAcccount" 
+                placeholder="Mật khẩu" 
+                type={showPassword ? 'text' : 'password'}
+                value={password} 
+                onChange={handleOnchangePassword}
+                disabled={isPending}
+            />
+            <InputFormComponent 
+                className="inputAcccount" 
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Nhập lại mật khẩu" 
+                value={confirmPassword}
+                onChange={handleOnchangeConfirmPassword}
+                disabled={isPending}
+            />
+             <label style={{ display: 'block', marginTop: 10,marginRight:170, cursor: isPending ? 'not-allowed' : 'pointer', opacity: isPending ? 0.6 : 1 }}>
+                <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => !isPending && setShowPassword(!showPassword)}
+                disabled={isPending}
+                style={{ marginRight: 8 }}
+                />
+                Hiện mật khẩu
+            </label>
+            
+            {data?.status === "ERR" && (
+                <div style={{ color: 'red', marginTop: '10px' }}>
+                  {data.message}
+                </div>
+            )}
             <ButtonComponent
-                disabled={!email.length || !password.length || !confirmPassword.length}
+                disabled={!email.length || !password.length || !confirmPassword.length || isPending}
                 onClick={handleSignUp}
                 styleButton={{background: '#0a4f58',fontWeight:'500',lineHeight:'10px',
                             color: '#fff',padding:'17px 10px',border:'none',borderRadius:'4px',
-                            fontSize:'15px',width:'170px',margin:'16px 0 10px'
+                            fontSize:'15px',width:'170px',margin:'16px 0 10px',
+                            cursor: isPending ? 'wait' : 'pointer',
+                            opacity: (!email.length || !password.length || !confirmPassword.length || isPending) ? 0.6 : 1
 
                 }}
-                textButton={'Đăng ký'}
+                textButton={isPending ? 'Đang đăng ký...' : 'Đăng ký'}
                       />
-          </LoadingComponent>
-
-        </div>
+          </div>
+        </LoadingComponent>
 
     </div>
   )

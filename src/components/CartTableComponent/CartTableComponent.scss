@@ -1,33 +1,37 @@
-.controls{
+// Existing styles...
+.controls {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+    gap: 8px;
+    font-weight: 600;
+
+    .button_quantity {
         display: flex;
-        align-items: center;
-        padding-top: 10px;
-        gap: 8px;
-        font-weight: 600;
-        .button_quantity{
-            display: flex;   
-            justify-content: center;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            line-height: 1;
-            cursor: pointer;
-            border: 1px solid #0e0e0e;
-        }
+        justify-content: center;
+        height: 18px;
+        width: 18px;
+        border-radius: 50%;
+        line-height: 1;
+        cursor: pointer;
+        border: 1px solid #0e0e0e;
+    }
 
- }
+}
 
 
 
-.title_product_cart,.btn_delete_cart {
+.title_product_cart,
+.btn_delete_cart {
     font-size: 16px;
-    letter-spacing:1px;
+    letter-spacing: 1px;
     color: #333;
     font-weight: 500;
     cursor: pointer;
 }
 
-.price_cart,.total_cart {
+.price_cart,
+.total_cart {
     font-size: 20px;
     color: #000000;
     font-weight: 600;
@@ -36,3 +40,102 @@
     text-align: center;
 }
 
+// Responsive for Mobile
+@media (max-width: 768px) {
+    .cart-table-wrapper {
+        width: 100% !important;
+        overflow: hidden;
+    }
+
+    .cart-table {
+        .ant-table-thead {
+            display: none; // Hide header
+        }
+
+        .ant-table-tbody>tr {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
+        }
+
+        .ant-table-tbody>tr>td {
+            border-bottom: none !important; // Remove default border
+            padding: 5px 0 !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        // Add labels via pseudo-elements is hard with generic AntD cells if we don't have custom classes on TDs.
+        // But we can infer order since columns are fixed.
+
+        // Product Cell (First one)
+        .ant-table-tbody>tr>td:nth-child(1) {
+            width: 100%;
+            justify-content: flex-start;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee !important;
+            padding-bottom: 10px !important;
+
+            div {
+                // Inner flex container of the product render
+                width: 100%;
+            }
+        }
+
+        // Price Cell
+        .ant-table-tbody>tr>td:nth-child(2) {
+            &::before {
+                content: 'Đơn giá:';
+                font-weight: 600;
+                color: #666;
+            }
+
+            .price_cart {
+                text-align: right;
+                width: auto;
+                font-size: 16px;
+            }
+        }
+
+        // Quantity Cell
+        .ant-table-tbody>tr>td:nth-child(3) {
+            &::before {
+                content: 'Số lượng:';
+                font-weight: 600;
+                color: #666;
+            }
+        }
+
+        // Total Cell
+        .ant-table-tbody>tr>td:nth-child(4) {
+            &::before {
+                content: 'Thành tiền:';
+                font-weight: 600;
+                color: #666;
+            }
+
+            .total_cart {
+                text-align: right;
+                width: auto;
+                font-size: 16px;
+                color: #e30613;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .title_product_cart {
+        font-size: 14px;
+    }
+
+    .price_cart,
+    .total_cart {
+        font-size: 16px;
+    }
+}
