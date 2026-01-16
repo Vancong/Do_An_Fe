@@ -69,7 +69,7 @@ const HeaderCompoent = ({ isHiddenFavorite = false, isHiddenCart = false, isHidd
         style={{ justifyContent: isHiddenSearch && isHiddenFavorite ? 'space-between' : 'unset' }}
       >
         <Col xs={24} sm={24} md={6} lg={6} className='header_logo'>
-          <div style={{ display: 'flex', alignItems: 'flex-end', gap: 10 }}>
+          <div className="header_logo_inner">
             <img src={websiteInfo?.logo} alt="logo" style={{ width: 50, height: 50, objectFit: 'cover', cursor: 'pointer' }}
               onClick={() => navigate('/')}
             />
@@ -129,9 +129,9 @@ const HeaderCompoent = ({ isHiddenFavorite = false, isHiddenCart = false, isHidd
                 </Popover>
               </>
             ) : (
-              <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }}>
-                <span className='user_text'>Đăng nhập/Đăng ký</span>
-                <div>
+              <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }} className="account-login-container">
+                <span className='user_text register-text'>Đăng nhập/Đăng ký</span>
+                <div className="account-details">
                   <span className='user_text'>Tài khoản </span>
                   <CaretDownOutlined />
                 </div>

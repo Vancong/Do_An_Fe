@@ -19,23 +19,26 @@
 
     // Logo và tên website
     .header_logo {
-        display: flex;
-        align-items: flex-end;
-        gap: 10px;
         flex-shrink: 0;
 
-        img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            cursor: pointer;
-        }
+        .header_logo_inner {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
 
-        h2 {
-            cursor: pointer;
-            margin: 0;
-            font-size: 20px;
-            white-space: nowrap;
+            img {
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+                cursor: pointer;
+            }
+
+            h2 {
+                cursor: pointer;
+                margin: 0;
+                font-size: 20px;
+                white-space: nowrap;
+            }
         }
     }
 
@@ -64,7 +67,7 @@
 .user {
     cursor: pointer;
     display: flex;
-    align-items: cennter;
+    align-items: center;
     gap: 10px;
 
     .user_text {
@@ -139,6 +142,7 @@
 // Responsive cho mobile
 @media (max-width: 768px) {
     .header_top {
+        position: relative; // For absolute positioning of logo
         margin: 0 15px;
         padding-top: 15px;
         justify-content: space-between !important;
@@ -146,58 +150,62 @@
         flex-wrap: wrap !important;
         gap: 0;
 
-        // Hamburger Menu
+        // 1. Hamburger Menu (Left)
         .mobile-menu-toggle {
             display: block !important;
             order: 1 !important;
             flex: 0 0 auto !important;
-            width: auto !important;
-            margin-right: 10px;
+            z-index: 2;
 
             .hamburger_menu {
-                font-size: 24px;
+                font-size: 26px;
                 color: #0a4f58;
             }
         }
 
-        // Logo
+        // 2. Logo (Absolute Center)
         .header_logo {
-            order: 2 !important;
-            flex: 1 !important;
-            justify-content: flex-start !important;
-            display: flex !important;
-            align-items: center !important;
+            position: absolute;
+            left: 50%;
+            top: 12px;
+            transform: translateX(-50%);
+            z-index: 1;
+            width: auto !important;
+            justify-content: center !important;
+            margin: 0 !important;
 
-            img {
-                width: 35px;
-                height: 35px;
-            }
+            .header_logo_inner {
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-            h2 {
-                font-size: 16px;
-                margin-bottom: 0;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                img {
+                    width: 40px;
+                    height: 40px;
+                }
+
+                h2 {
+                    display: none; // Hide text per user request
+                }
             }
         }
 
-        // User Icons
+        // 3. User Icons (Right)
         .header_user {
-            order: 3 !important;
+            order: 2 !important;
             flex: 0 0 auto !important;
             justify-content: flex-end !important;
             gap: 10px;
+            z-index: 2;
         }
 
-        // Search Box
+        // 4. Search Box (Bottom)
         .header_search {
-            order: 4 !important;
+            order: 3 !important;
             flex: 0 0 100% !important;
             width: 100% !important;
-            min-width: 100% !important;
-            margin-top: 15px !important; // Add spacing above search
-            margin-bottom: 20px !important; // Add spacing below search for banner
+            margin-top: 35px !important;
+            margin-bottom: 10px !important; // Remove bottom spacing
         }
 
         .ant-col.header_search {
@@ -212,20 +220,36 @@
         }
     }
 
+    // User Login Button Styling on Mobile
     .user {
-        gap: 5px;
-        font-size: 14px;
-        flex-wrap: nowrap;
+        gap: 8px;
         align-items: center;
 
+        .account-login-container {
+            display: flex;
+            align-items: center;
+
+            .register-text {
+                display: block !important;
+                font-size: 13px;
+                font-weight: 600;
+                color: #0a4f58;
+                white-space: nowrap;
+            }
+
+            .account-details {
+                display: none !important;
+            }
+        }
+
         .user_text {
-            font-size: 13px;
+            // Let register-text override or use specific class
         }
     }
 
     .avt-header {
-        height: 25px;
-        width: 25px;
+        height: 28px;
+        width: 28px;
     }
 
     .menu_item {
@@ -257,26 +281,26 @@
     .header_top {
         margin: 0 10px;
         padding-top: 10px;
-        gap: 5px;
 
         .header_search {
-            margin-top: 10px;
-            margin-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 0px; // Remove bottom spacing
         }
-    }
 
-    .user {
-        gap: 3px;
-        font-size: 12px;
+        .header_logo {
+            top: 10px;
 
-        .user_text {
-            font-size: 11px;
-            display: none;
+            .header_logo_inner {
+                img {
+                    width: 35px;
+                    height: 35px;
+                }
+            }
         }
     }
 
     .avt-header {
-        height: 20px;
-        width: 20px;
+        height: 24px;
+        width: 24px;
     }
 }
