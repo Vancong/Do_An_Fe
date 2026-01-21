@@ -21,7 +21,7 @@
     useEffect(() => {
       handlDetailInfoWebSite()
       const handlGetUserAndCart= async () =>{
-          const  {decode,storeData}=handleDecode()|| {};
+          const  {decode,storeData} = await handleDecode() || {};
             try {
               if (decode?.id) {
                 await handlGetDetailUser(decode.id, storeData);
@@ -60,14 +60,64 @@
     dispatch(setFavoriteIds({ total: res?.total || 0, productIds: listId }));
   };
 
-    const handleDecode = () => {
+    const handleDecode = async () => {
       let storeData = localStorage.getItem('access_token');
       if (!storeData) return {};
+      
       try {
-        const decode = jwtDecode(storeData);
-        return { decode, storeData };
+        // Parse token nếu nó là JSON string
+        let token = storeData;
+        try {
+          if (token && token.startsWith('"')) {
+            token = JSON.parse(token);
+          }
+        } catch (e) {
+          // Token không phải JSON, giữ nguyên
+        }
+        
+        const decode = jwtDecode(token);
+        const currentTime = Date.now() / 1000;
+        
+        // Nếu token hết hạn, tự động refresh
+        if (decode?.exp < currentTime) {
+          try {
+            const refreshData = await UserService.refreshToken();
+            if (refreshData?.status === 'OK' && refreshData?.access_token) {
+              const tokenToSave = typeof refreshData.access_token === 'string' 
+                ? refreshData.access_token 
+                : JSON.stringify(refreshData.access_token);
+              localStorage.setItem('access_token', tokenToSave);
+              
+              // Decode token mới
+              const newDecode = jwtDecode(refreshData.access_token);
+              return { decode: newDecode, storeData: refreshData.access_token };
+            }
+          } catch (refreshErr) {
+            console.log('Không thể refresh token:', refreshErr);
+            localStorage.removeItem('access_token');
+            return {};
+          }
+        }
+        
+        return { decode, storeData: token };
       } catch (err) {
         console.log('Token không hợp lệ hoặc hết hạn:', err);
+        // Thử refresh token một lần nữa
+        try {
+          const refreshData = await UserService.refreshToken();
+          if (refreshData?.status === 'OK' && refreshData?.access_token) {
+            const tokenToSave = typeof refreshData.access_token === 'string' 
+              ? refreshData.access_token 
+              : JSON.stringify(refreshData.access_token);
+            localStorage.setItem('access_token', tokenToSave);
+            
+            const newDecode = jwtDecode(refreshData.access_token);
+            return { decode: newDecode, storeData: refreshData.access_token };
+          }
+        } catch (refreshErr) {
+          console.log('Không thể refresh token:', refreshErr);
+        }
+        localStorage.removeItem('access_token');
         return {};
       }
     };
