@@ -1,0 +1,46 @@
+// Màu nền header
+$header-bg-color: #ffffff;
+
+// Màu nền body
+$body-bg-color: #ffffff;
+
+// Màu chữ menu
+$menu-color: #0a4f58;
+$menu-font-size: 16px;
+
+// Màu footer
+$footer-bg-color: #5a8d93;   // màu nền
+$footer-text-color: #ffffff;   // màu chữ
+$footer-font-size: 16px;
+
+// Class header
+.header-bg-color {
+    background-color: $header-bg-color;
+}
+
+// Class body
+.body-bg-color {
+    background-color: $body-bg-color;
+}
+
+// Class menu
+.menu-color {
+    color: $menu-color;
+}
+
+.menu-font-size {
+    font-size: $menu-font-size;
+}
+
+// Class footer
+.footer-bg-color {
+    background-color: $footer-bg-color;
+}
+
+.footer-text-color {
+    color: $footer-text-color;
+}
+
+.footer-font-size {
+    font-size: $footer-font-size;
+}

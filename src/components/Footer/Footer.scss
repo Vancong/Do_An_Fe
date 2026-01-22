@@ -1,8 +1,10 @@
+@import "../../variables.scss";
+
 .footer {
-  background: #5a8d93;
-  color: white;
+  background: $footer-bg-color;
+  color: $footer-text-color;
   padding: 40px 0;
-  font-size: 16px;
+  font-size: $footer-font-size;
 }
 
 .footer-container {
@@ -27,8 +29,8 @@
 
   h4 {
     margin-bottom: 12px;
-    color: #fff;
-    font-size: 16px;
+    color: $footer-text-color;
+    font-size: $footer-font-size;
   }
 
   ul {
@@ -38,7 +40,7 @@
       margin-bottom: 8px;
       cursor: pointer;
       &:hover {
-        color: #fff;
+        color: $footer-text-color;
       }
     }
   }
@@ -57,7 +59,7 @@
       color: #ccc;
       font-size: 20px;
       &:hover {
-        color: #fff;
+        color: $footer-text-color;
       }
     }
   }
@@ -68,7 +70,7 @@
   padding-top: 18px;
   border-top: 1px solid #816262;
   font-size: 13px;
-  color: white;
+  color: $footer-text-color;
 }
 
 // Responsive cho mobile
